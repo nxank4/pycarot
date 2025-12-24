@@ -14,9 +14,6 @@ Modernized from PyCaret with updated deps, tooling, and Python 3.11–3.14 suppo
 <div align="left">
 
 # Pycarot at a glance
-- Low-code ML workflows (classification, regression, clustering, anomaly, time series)
-- Modern stack: Python 3.11–3.14, refreshed dependencies, uv-based dev flow
-- Batteries included: plotting, MLOps hooks, tuning, model persistence
 
 # 🚀 Installation
 
@@ -175,14 +172,8 @@ s.save_model(best, 'best_pipeline')
 # 👥 Who should use Pycarot?
 Pycarot is an open source library for:
 
-- Experienced Data Scientists who want to increase productivity.
-- Citizen Data Scientists who prefer a low code machine learning solution.
-- Data Science Professionals who want to build rapid prototypes.
-- Data Science and Machine Learning students and enthusiasts.
 
 # 📝 License
 Pycarot is free and open-source under the [MIT](https://github.com/pycaret/pycarot/blob/master/LICENSE) license.
 
 # 🙌 Credits
-- Built on the shoulders of the original PyCaret project and its contributors.
-- Thanks to the broader open-source ML ecosystem (scikit-learn, pandas, lightgbm, xgboost, sktime, etc.).
