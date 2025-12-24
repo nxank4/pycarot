@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
 Package: PyCaret
@@ -6,6 +5,7 @@ Author: Mavs
 Description: Unit tests for pipeline.py
 
 """
+
 import io
 
 import numpy as np
@@ -18,50 +18,50 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
 
 
 def test_select_target_by_index():
     """Assert that the target can be selected by its column index."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, target=2)
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, target=2)
     assert pc.target_param == "WeekofPurchase"
 
 
 def test_select_target_by_str():
     """Assert that the target can be selected by its column name."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, target="WeekofPurchase")
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, target="WeekofPurchase")
     assert pc.target_param == "WeekofPurchase"
 
 
 def test_nans_in_target_column():
     """Assert that the target can be selected by its column name."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data.loc[3, "WeekofPurchase"] = np.nan
     with pytest.raises(ValueError, match=r".*missing values found.*"):
-        pycaret.classification.setup(data, target="WeekofPurchase")
+        pycarot.classification.setup(data, target="WeekofPurchase")
 
 
 def test_select_target_by_sequence():
     """Assert that the target can be a sequence."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, target=[1] * len(data))
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, target=[1] * len(data))
     assert pc.target_param == "target"
 
 
 def test_input_is_array():
     """Assert that the input can be a numpy array."""
-    pc = pycaret.classification.setup(np.eye(4), target=[1, 0, 0, 1])
+    pc = pycarot.classification.setup(np.eye(4), target=[1, 0, 0, 1])
     assert isinstance(pc.dataset, pd.DataFrame)
     assert pc.target_param == "target"
 
 
 def test_input_is_sparse():
     """Assert that the input can be a scipy sparse matrix."""
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=csr_matrix((300, 4)),
         target=[1, 0, 1] * 100,
         preprocess=False,
@@ -72,17 +72,17 @@ def test_input_is_sparse():
 
 def test_assign_index_is_false():
     """Assert that the index is reset when index=False."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data.index = list(range(100, len(data) + 100))
-    pc = pycaret.classification.setup(data, index=False)
+    pc = pycarot.classification.setup(data, index=False)
     assert pc.dataset.index[0] == 0
 
 
 def test_assign_index_is_true():
     """Assert that the index remains unchanged when index=True."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data.index = list(range(100, len(data) + 100))
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         index=True,
         data_split_shuffle=False,
@@ -94,8 +94,8 @@ def test_assign_index_is_true():
 @pytest.mark.parametrize("index", [0, "Id", list(range(2, 1072))])
 def test_assign_index(index):
     """Assert that the index can be assigned."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         index=index,
         data_split_shuffle=False,
@@ -107,17 +107,17 @@ def test_assign_index(index):
 
 def test_duplicate_columns():
     """Assert that an error is raised when there are duplicate columns."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data = data.rename(columns={"Purchase": "Id"})  # Make another column named Id
     with pytest.raises(ValueError, match=".*Duplicate column names found in X.*"):
-        pycaret.classification.setup(data)
+        pycarot.classification.setup(data)
 
 
 def test_duplicate_indices():
     """Assert that an error is raised when there are duplicate indices."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     with pytest.raises(ValueError, match=".*duplicate indices.*"):
-        pycaret.classification.setup(
+        pycarot.classification.setup(
             data=data,
             test_data=data,
             index=True,
@@ -126,27 +126,27 @@ def test_duplicate_indices():
 
 def test_preprocess_is_False():
     """Assert that preprocessing is skipped when preprocess=False."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, preprocess=False)
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, preprocess=False)
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert X["Purchase"].dtype.kind not in "ifu"  # No encoding of categorical columns
 
 
 def test_ignore_features():
     """Assert that features can be ignored in preprocessing."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, ignore_features=["Purchase"])
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, ignore_features=["Purchase"])
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert "Purchase" not in X
 
 
 def test_weird_chars_in_column_names():
     """Assert that weird characters from column names are dropped."""
-    data = pycaret.datasets.get_data("parkinsons")
+    data = pycarot.datasets.get_data("parkinsons")
     data.columns = ["[col"] + list(data.columns[1:])
     assert "[" in data.columns[0]
 
-    pc = pycaret.regression.setup(data)
+    pc = pycarot.regression.setup(data)
     assert pc.dataset_transformed.columns[0] == "col"
 
 
@@ -170,33 +170,33 @@ def test_weird_chars_in_column_names_no_impact_on_other_preprocessors():
     """
     buffer = io.StringIO(dataset)
     data = pd.read_csv(buffer)
-    exp = pycaret.classification.ClassificationExperiment()
+    exp = pycarot.classification.ClassificationExperiment()
     exp.setup(data=data, target="Target", index="UDI", fold=2)
     exp.create_model("lightgbm")
 
 
 def test_encode_target():
     """Assert that the target column is automatically encoded."""
-    data = pycaret.datasets.get_data("telescope")
-    pc = pycaret.classification.setup(data)
+    data = pycarot.datasets.get_data("telescope")
+    pc = pycarot.classification.setup(data)
     _, y = pc.pipeline.transform(pc.X, pc.y)
     assert y.dtype.kind in "ifu"
 
 
 def test_date_features():
     """Assert that features are extracted from date features."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data["date"] = pd.date_range(start="1/1/2018", periods=len(data))
-    pc = pycaret.classification.setup(data, target=-2, date_features=["date"])
+    pc = pycarot.classification.setup(data, target=-2, date_features=["date"])
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert all([f"date_{attr}" in X for attr in ("day", "month", "year")])
 
 
 def test_custom_date_features():
     """Assert that features are extracted from date features."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data["date"] = pd.date_range(start="1/1/2018", periods=len(data))
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data,
         target=-2,
         date_features=["date"],
@@ -206,14 +206,12 @@ def test_custom_date_features():
     assert "date_quarter" in X and "day" not in X
 
 
-@pytest.mark.parametrize(
-    "imputation_method", [0, "drop", "mean", "median", "mode", "knn"]
-)
+@pytest.mark.parametrize("imputation_method", [0, "drop", "mean", "median", "mode", "knn"])
 def test_simple_numeric_imputation(imputation_method):
     """Assert that missing values are imputed."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data.loc[100, "WeekofPurchase"] = np.nan
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         imputation_type="simple",
         numeric_iterative_imputer=imputation_method,
@@ -225,9 +223,9 @@ def test_simple_numeric_imputation(imputation_method):
 @pytest.mark.parametrize("imputation_method", ["drop", "missing", "mode"])
 def test_simple_categorical_imputation(imputation_method):
     """Assert that missing values are imputed."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data.loc[100, "Purchase"] = np.nan
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         imputation_type="simple",
         categorical_imputation=imputation_method,
@@ -240,7 +238,7 @@ def test_simple_categorical_imputation(imputation_method):
 @pytest.mark.parametrize("imputer", ("catboost", "lightgbm", "rf", "lr"))
 def test_iterative_imputer(dtypes_to_select, imputer):
     """Test iterative imputer"""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     categories = {}
     for i, col in enumerate(data.columns):
         # leave two columns and target filled
@@ -260,7 +258,7 @@ def test_iterative_imputer(dtypes_to_select, imputer):
     data_subset["STORE"] = data["STORE"]
 
     data_subset = data_subset.copy()
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data_subset,
         target="STORE",
         imputation_type="iterative",
@@ -279,8 +277,8 @@ def test_iterative_imputer(dtypes_to_select, imputer):
 def test_iterative_imputer_many_categories():
     """Test iterative imputer with a dataset with many categories"""
     # tests for pycaret/pycaret/issues/3636
-    data = pycaret.datasets.get_data("titanic")
-    pycaret.classification.setup(
+    data = pycarot.datasets.get_data("titanic")
+    pycarot.classification.setup(
         data,
         target="Survived",
         session_id=123,
@@ -294,8 +292,8 @@ def test_iterative_imputer_many_categories():
 @pytest.mark.parametrize("embedding_method", ["bow", "tf-idf"])
 def test_text_embedding(embedding_method):
     """Assert that text columns are embedded."""
-    data = pycaret.datasets.get_data("spx")
-    pc = pycaret.regression.setup(
+    data = pycarot.datasets.get_data("spx")
+    pc = pycarot.regression.setup(
         data=data.iloc[:50, :],  # Less rows for faster processing
         text_features=["text"],
         text_features_method=embedding_method,
@@ -306,8 +304,8 @@ def test_text_embedding(embedding_method):
 
 def test_encoding_ordinal_features():
     """Assert that ordinal features are encoded correctly."""
-    data = pycaret.datasets.get_data("employee")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("employee")
+    pc = pycarot.classification.setup(
         data=data,
         imputation_type=None,
         ordinal_features={"salary": ["low", "medium", "high"]},
@@ -321,26 +319,26 @@ def test_encoding_ordinal_features():
 
 def test_encoding_grouping_rare_categories():
     """Assert that rare categories are grouped before encoding."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data, rare_to_value=0.5)
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data, rare_to_value=0.5)
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert "rare" in pc.pipeline.steps[-1][1].transformer.mapping[0]["mapping"]
 
 
 def test_encoding_categorical_features():
     """Assert that categorical features are encoded correctly."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data)
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data)
     X, _ = pc.pipeline.transform(pc.X, pc.y)
-    assert list(sorted(X["Purchase"].unique())) == [0.0, 1.0]
+    assert sorted(X["Purchase"].unique()) == [0.0, 1.0]
 
 
 def test_encoding_categorical_features_duplicate_names():
     """Assert that no duplicate columns are created after OHE"""
-    data = pycaret.datasets.get_data("iris")
+    data = pycarot.datasets.get_data("iris")
     data["species_2"] = data["species"].copy()
     data["target"] = data["species"].copy()
-    pc = pycaret.classification.setup(data, target="target")
+    pc = pycarot.classification.setup(data, target="target")
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert len(list(X.columns)) == len(set(X.columns))
 
@@ -348,8 +346,8 @@ def test_encoding_categorical_features_duplicate_names():
 @pytest.mark.parametrize("transformation_method", ["yeo-johnson", "quantile"])
 def test_transformation(transformation_method):
     """Assert that features can be transformed to a gaussian distribution."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         transformation=True,
         transformation_method=transformation_method,
@@ -361,8 +359,8 @@ def test_transformation(transformation_method):
 @pytest.mark.parametrize("normalize_method", ["zscore", "minmax", "maxabs", "robust"])
 def test_normalize(normalize_method):
     """Assert that features can be normalized."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         normalize=True,
         normalize_method=normalize_method,
@@ -373,9 +371,9 @@ def test_normalize(normalize_method):
 
 def test_low_variance_threshold():
     """Assert that features with low variance are dropped."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data["feature"] = 1  # Minimal variance
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         target="STORE",
         low_variance_threshold=0,
@@ -387,8 +385,8 @@ def test_low_variance_threshold():
 @pytest.mark.parametrize("drop_groups", (True, False))
 def test_feature_grouping(drop_groups):
     """Assert that feature groups are replaced for stats."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         target="STORE",
         group_features={"gr1": list(data.columns[:2]), "gr2": list(data.columns[3:5])},
@@ -404,9 +402,9 @@ def test_feature_grouping(drop_groups):
 
 def test_remove_multicollinearity():
     """Assert that one of two collinear features are dropped."""
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     data["Id 2"] = list(range(len(data)))  # Correlated with Id
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         target="STORE",
         remove_multicollinearity=True,
@@ -419,8 +417,8 @@ def test_remove_multicollinearity():
 
 def test_bin_numeric_features():
     """Assert that numeric features can be binned."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(data=data, bin_numeric_features=["Id"])
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(data=data, bin_numeric_features=["Id"])
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert X["Id"].nunique() == 5
 
@@ -428,8 +426,8 @@ def test_bin_numeric_features():
 @pytest.mark.parametrize("outliers_method", ["iforest", "ee", "lof"])
 def test_remove_outliers(outliers_method):
     """Assert that outliers can be removed."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         low_variance_threshold=None,
         remove_outliers=True,
@@ -441,8 +439,8 @@ def test_remove_outliers(outliers_method):
 
 def test_polynomial_features():
     """Assert that polynomial features can be created."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         polynomial_features=True,
         polynomial_degree=2,
@@ -451,13 +449,11 @@ def test_polynomial_features():
     assert X.shape[1] > data.shape[1]  # Extra features were created
 
 
-@pytest.mark.parametrize(
-    "fix_imbalance_method", ["smote", "nearmiss", "SMOTEENN", ADASYN()]
-)
+@pytest.mark.parametrize("fix_imbalance_method", ["smote", "nearmiss", "SMOTEENN", ADASYN()])
 def test_fix_imbalance(fix_imbalance_method):
     """Assert that the classes can be balanced."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         low_variance_threshold=None,
         fix_imbalance=True,
@@ -469,8 +465,8 @@ def test_fix_imbalance(fix_imbalance_method):
 @pytest.mark.parametrize("pca_method", ["linear", "kernel", "incremental"])
 def test_pca(pca_method):
     """Assert that pca can be applied."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         pca=True,
         pca_method=pca_method,
@@ -482,8 +478,8 @@ def test_pca(pca_method):
 
 def test_keep_features():
     """Assert that features are not dropped through preprocess."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         keep_features=["Id"],
         pca=True,
@@ -496,8 +492,8 @@ def test_keep_features():
 @pytest.mark.parametrize("fs_method", ["univariate", "classic", "sequential"])
 def test_feature_selection(fs_method):
     """Assert that feature selection can be applied."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         feature_selection=True,
         feature_selection_method=fs_method,
@@ -510,8 +506,8 @@ def test_feature_selection(fs_method):
 
 def test_feature_selection_custom_estimator():
     """Assert that feature selection can be applied using a custom estimator."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         feature_selection=True,
         feature_selection_method="classic",
@@ -524,8 +520,8 @@ def test_feature_selection_custom_estimator():
 
 def test_custom_pipeline_is_list():
     """Assert that a custom pipeline can be provided as list."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
         custom_pipeline=[("pca", PCA(n_components=5))],
     )
@@ -535,12 +531,10 @@ def test_custom_pipeline_is_list():
 
 def test_custom_pipeline_is_pipeline():
     """Assert that a custom pipeline can be provided as a Pipeline object."""
-    data = pycaret.datasets.get_data("juice")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    pc = pycarot.classification.setup(
         data=data,
-        custom_pipeline=Pipeline(
-            [("scaler", StandardScaler()), ("pca", PCA(n_components=5))]
-        ),
+        custom_pipeline=Pipeline([("scaler", StandardScaler()), ("pca", PCA(n_components=5))]),
     )
     X, _ = pc.pipeline.transform(pc.X, pc.y)
     assert X.shape[1] == 5
@@ -549,8 +543,8 @@ def test_custom_pipeline_is_pipeline():
 @pytest.mark.parametrize("pos", [-1, 0, 1])
 def test_custom_pipeline_positions(pos):
     """Assert that a custom pipeline can be provided at a specific position."""
-    data = pycaret.datasets.get_data("cancer")
-    pc = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("cancer")
+    pc = pycarot.classification.setup(
         data=data,
         remove_outliers=True,
         remove_multicollinearity=True,

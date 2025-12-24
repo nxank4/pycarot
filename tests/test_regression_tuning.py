@@ -3,9 +3,10 @@ import sys
 import pandas as pd
 import pytest
 
-import pycaret.datasets
-import pycaret.regression
-from pycaret.utils.generic import can_early_stop
+import pycarot.datasets
+import pycarot.regression
+from pycarot.utils.generic import can_early_stop
+
 
 if sys.platform == "linux":
     pytest.skip("Skipping test module on Linux", allow_module_level=True)
@@ -14,11 +15,11 @@ if sys.platform == "linux":
 @pytest.mark.skip(reason="no way of currently testing this")
 def test_regression_tuning():
     # loading dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
     assert isinstance(data, pd.DataFrame)
 
     # init setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         train_size=0.99,
@@ -28,16 +29,16 @@ def test_regression_tuning():
         n_jobs=1,
     )
 
-    models = pycaret.regression.compare_models(turbo=False, n_select=100)
+    models = pycarot.regression.compare_models(turbo=False, n_select=100)
 
-    models.append(pycaret.regression.stack_models(models[:3]))
-    models.append(pycaret.regression.ensemble_model(models[0]))
+    models.append(pycarot.regression.stack_models(models[:3]))
+    models.append(pycarot.regression.ensemble_model(models[0]))
 
     for model in models:
         print(f"Testing model {model}")
         if "Dummy" in str(model):
             continue
-        pycaret.regression.tune_model(
+        pycarot.regression.tune_model(
             model,
             fold=2,
             n_iter=2,
@@ -45,7 +46,7 @@ def test_regression_tuning():
             search_algorithm="random",
             early_stopping=False,
         )
-        pycaret.regression.tune_model(
+        pycarot.regression.tune_model(
             model,
             fold=2,
             n_iter=2,
@@ -53,7 +54,7 @@ def test_regression_tuning():
             search_algorithm="bayesian",
             early_stopping=False,
         )
-        pycaret.regression.tune_model(
+        pycarot.regression.tune_model(
             model,
             fold=2,
             n_iter=2,
@@ -78,7 +79,7 @@ def test_regression_tuning():
         #     search_algorithm="optuna",
         #     early_stopping=False,
         # )
-        pycaret.regression.tune_model(
+        pycarot.regression.tune_model(
             model,
             fold=2,
             n_iter=2,
@@ -103,7 +104,7 @@ def test_regression_tuning():
         #     early_stopping="asha",
         # )
         if can_early_stop(model, True, True, True, {}):
-            pycaret.regression.tune_model(
+            pycarot.regression.tune_model(
                 model,
                 fold=2,
                 n_iter=2,

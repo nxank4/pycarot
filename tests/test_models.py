@@ -4,12 +4,12 @@ import numba
 import pytest
 from numba.core.dispatcher import Dispatcher
 
-import pycaret.datasets
-from pycaret.anomaly import AnomalyExperiment
-from pycaret.classification import ClassificationExperiment
-from pycaret.clustering import ClusteringExperiment
-from pycaret.regression import RegressionExperiment
-from pycaret.time_series import TSForecastingExperiment
+import pycarot.datasets
+from pycarot.anomaly import AnomalyExperiment
+from pycarot.classification import ClassificationExperiment
+from pycarot.clustering import ClusteringExperiment
+from pycarot.regression import RegressionExperiment
+from pycarot.time_series import TSForecastingExperiment
 
 
 @pytest.fixture
@@ -53,7 +53,7 @@ def check_exp(exp, **kwargs):
 def test_model_equality_classification():
     exp = ClassificationExperiment()
     exp.setup(
-        pycaret.datasets.get_data("juice"),
+        pycarot.datasets.get_data("juice"),
         target="Purchase",
     )
     check_exp(exp, cross_validation=False)
@@ -62,7 +62,7 @@ def test_model_equality_classification():
 def test_model_equality_regression():
     exp = RegressionExperiment()
     exp.setup(
-        pycaret.datasets.get_data("boston"),
+        pycarot.datasets.get_data("boston"),
         target="medv",
     )
     check_exp(exp, cross_validation=False)
@@ -71,7 +71,7 @@ def test_model_equality_regression():
 def test_model_equality_time_series():
     exp = TSForecastingExperiment()
     exp.setup(
-        pycaret.datasets.get_data("airline"),
+        pycarot.datasets.get_data("airline"),
         fh=12,
     )
     check_exp(exp, cross_validation=False)
@@ -80,7 +80,7 @@ def test_model_equality_time_series():
 def test_model_equality_clustering():
     exp = ClusteringExperiment()
     exp.setup(
-        pycaret.datasets.get_data("jewellery"),
+        pycarot.datasets.get_data("jewellery"),
     )
     check_exp(exp)
 
@@ -88,7 +88,7 @@ def test_model_equality_clustering():
 def test_model_equality_anomaly(disable_numba):
     exp = AnomalyExperiment()
     exp.setup(
-        pycaret.datasets.get_data("anomaly"),
+        pycarot.datasets.get_data("anomaly"),
     )
     check_exp(exp)
 

@@ -3,14 +3,15 @@ import sys
 
 import pytest
 
+
 sys.path.insert(0, os.path.abspath(".."))
 
 
 def test_overflow_gbr_lightgbm():
-    from pycaret.datasets import get_data
+    from pycarot.datasets import get_data
 
     data = get_data("boston")
-    from pycaret.regression import create_model, setup, tune_model
+    from pycarot.regression import create_model, setup, tune_model
 
     setup(
         data,
@@ -29,10 +30,10 @@ def test_overflow_gbr_lightgbm():
 def test_overflow_xgboost():
     pytest.importorskip("xgboost", reason="Package xgboost not installed")
 
-    from pycaret.datasets import get_data
+    from pycarot.datasets import get_data
 
     data = get_data("boston")
-    from pycaret.regression import create_model, setup, tune_model
+    from pycarot.regression import create_model, setup, tune_model
 
     setup(
         data,

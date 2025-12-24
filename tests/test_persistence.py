@@ -4,7 +4,7 @@ import boto3
 import pytest
 from moto import mock_s3
 
-from pycaret.internal.persistence import deploy_model, load_model
+from pycarot.internal.persistence import deploy_model, load_model
 
 
 @pytest.fixture(scope="function")
@@ -30,9 +30,7 @@ def test_deploy_model(s3):
     model = "test_model"
     model_name = "test"
 
-    deploy_model(
-        model, model_name=model_name, platform="aws", authentication=authentication
-    )
+    deploy_model(model, model_name=model_name, platform="aws", authentication=authentication)
 
     s3.head_object(
         Bucket=authentication.get("bucket"),

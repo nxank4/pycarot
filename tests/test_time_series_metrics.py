@@ -1,13 +1,13 @@
-"""Module to test time_series functionality
-"""
+"""Module to test time_series functionality"""
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 
-from pycaret.containers.metrics.time_series import coverage
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.containers.metrics.time_series import coverage
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
@@ -197,7 +197,7 @@ def test_add_custom_metric(load_pos_data):
 
         Ref: https://medium.com/towards-data-science/forecast-error-measures-intermittent-demand-22617a733c9e
         """
-        from pycaret.containers.metrics.time_series import _check_series
+        from pycarot.containers.metrics.time_series import _check_series
 
         y_true = _check_series(y_true)
         y_pred = _check_series(y_pred)
@@ -209,12 +209,8 @@ def test_add_custom_metric(load_pos_data):
         return abs_bias
 
     # Add two custom metrics with kwargs
-    exp.add_metric(
-        "abs_bias_norm", "ABS_BIAS_NORM", abs_bias, greater_is_better=False, norm=True
-    )
-    exp.add_metric(
-        "abs_bias_cum", "ABS_BIAS_CUM", abs_bias, greater_is_better=False, norm=False
-    )
+    exp.add_metric("abs_bias_norm", "ABS_BIAS_NORM", abs_bias, greater_is_better=False, norm=True)
+    exp.add_metric("abs_bias_cum", "ABS_BIAS_CUM", abs_bias, greater_is_better=False, norm=False)
 
     _ = exp.create_model("arima")
     metrics = exp.pull()
@@ -225,6 +221,5 @@ def test_add_custom_metric(load_pos_data):
 
     # test that kwargs works
     assert (
-        (metrics["ABS_BIAS_CUM"] / FH).values.round(4)
-        == metrics["ABS_BIAS_NORM"].values.round(4)
+        (metrics["ABS_BIAS_CUM"] / FH).values.round(4) == metrics["ABS_BIAS_NORM"].values.round(4)
     ).all()

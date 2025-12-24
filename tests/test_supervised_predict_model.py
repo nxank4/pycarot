@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
 
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
 
 
 def test_classification_predict_model():
@@ -11,7 +11,7 @@ def test_classification_predict_model():
     # It should be revised and this comment should be deleted.
 
     # loading classification dataset
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     assert isinstance(data, pd.DataFrame)
 
     # Check class distribution in the original dataset
@@ -25,7 +25,7 @@ def test_classification_predict_model():
     print("Unseen class distribution:", unseen_data["Purchase"].value_counts())
 
     # init setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data=training_data,
         target="Purchase",
         ignore_features=["WeekofPurchase"],
@@ -35,9 +35,9 @@ def test_classification_predict_model():
         session_id=123,
         n_jobs=1,
     )
-    lr_model = pycaret.classification.create_model("lr")
-    predictions = pycaret.classification.predict_model(lr_model, data=unseen_data)
-    metrics = pycaret.classification.pull()
+    lr_model = pycarot.classification.create_model("lr")
+    predictions = pycarot.classification.predict_model(lr_model, data=unseen_data)
+    metrics = pycarot.classification.pull()
 
     # Debugging prints
     print("Predictions columns:", predictions.columns)
@@ -47,12 +47,12 @@ def test_classification_predict_model():
     assert all(item in predictions.columns for item in unseen_data.columns)
 
     # Check that all metrics are valid
-    assert all(
-        metrics[metric][0] is not None for metric in metrics.columns
-    ), "Some metrics are None or invalid"
+    assert all(metrics[metric][0] is not None for metric in metrics.columns), (
+        "Some metrics are None or invalid"
+    )
 
-    predictions = pycaret.classification.predict_model(lr_model)
-    metrics = pycaret.classification.pull()
+    predictions = pycarot.classification.predict_model(lr_model)
+    metrics = pycarot.classification.pull()
 
     # Ensure both classes are present in predictions
     unique_pred_labels = set(predictions["prediction_label"].unique())
@@ -65,14 +65,14 @@ def test_classification_predict_model():
 
 def test_multiclass_predict_model():
     # loading classification dataset
-    data = pycaret.datasets.get_data("iris")
+    data = pycarot.datasets.get_data("iris")
     assert isinstance(data, pd.DataFrame)
 
     training_data = data.sample(frac=0.90)
     unseen_data = data.drop(training_data.index)
 
     # init setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="species",
         remove_multicollinearity=True,
@@ -81,26 +81,24 @@ def test_multiclass_predict_model():
         session_id=123,
         n_jobs=1,
     )
-    lr_model = pycaret.classification.create_model("lr")
-    predictions = pycaret.classification.predict_model(lr_model, data=unseen_data)
-    metrics = pycaret.classification.pull()
+    lr_model = pycarot.classification.create_model("lr")
+    predictions = pycarot.classification.predict_model(lr_model, data=unseen_data)
+    metrics = pycarot.classification.pull()
     # Check that columns of raw data are contained in columns of returned dataframe
     assert all(item in predictions.columns for item in unseen_data.columns)
     assert all(metrics[metric][0] for metric in metrics.columns)
 
-    predictions = pycaret.classification.predict_model(lr_model)
-    metrics = pycaret.classification.pull()
-    assert set(predictions["prediction_label"].unique()) == set(
-        data["species"].unique()
-    )
+    predictions = pycarot.classification.predict_model(lr_model)
+    metrics = pycarot.classification.pull()
+    assert set(predictions["prediction_label"].unique()) == set(data["species"].unique())
     assert all(metrics[metric][0] for metric in metrics.columns)
 
-    predictions = pycaret.classification.predict_model(lr_model, raw_score=True)
-    metrics = pycaret.classification.pull()
+    predictions = pycarot.classification.predict_model(lr_model, raw_score=True)
+    metrics = pycarot.classification.pull()
     assert all(metrics[metric][0] for metric in metrics.columns)
 
-    predictions = pycaret.classification.predict_model(lr_model, encoded_labels=True)
-    metrics = pycaret.classification.pull()
+    predictions = pycarot.classification.predict_model(lr_model, encoded_labels=True)
+    metrics = pycarot.classification.pull()
     assert set(predictions["prediction_label"].unique()) == set(
         range(len(data["species"].unique()))
     )
@@ -109,14 +107,14 @@ def test_multiclass_predict_model():
 
 def test_regression_predict_model():
     # loading classification dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
     assert isinstance(data, pd.DataFrame)
 
     training_data = data.sample(frac=0.90)
     unseen_data = data.drop(training_data.index)
 
     # init setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         ignore_features=["crim", "zn"],
@@ -126,13 +124,13 @@ def test_regression_predict_model():
         session_id=123,
         n_jobs=1,
     )
-    lr_model = pycaret.regression.create_model("lr")
-    predictions = pycaret.regression.predict_model(lr_model, data=unseen_data)
-    metrics = pycaret.regression.pull()
+    lr_model = pycarot.regression.create_model("lr")
+    predictions = pycarot.regression.predict_model(lr_model, data=unseen_data)
+    metrics = pycarot.regression.pull()
     # Check that columns of raw data are contained in columns of returned dataframe
     assert all(item in predictions.columns for item in unseen_data.columns)
 
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         ignore_features=["crim", "zn"],
@@ -143,7 +141,7 @@ def test_regression_predict_model():
         session_id=123,
         n_jobs=1,
     )
-    lr_model = pycaret.regression.create_model("lr")
-    pycaret.regression.predict_model(lr_model, data=unseen_data)
-    metrics_transformed = pycaret.regression.pull()
+    lr_model = pycarot.regression.create_model("lr")
+    pycarot.regression.predict_model(lr_model, data=unseen_data)
+    metrics_transformed = pycarot.regression.pull()
     assert np.isclose(metrics["R2"], metrics_transformed["R2"], atol=0.15)

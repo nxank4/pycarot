@@ -1,5 +1,4 @@
-"""Module to test time_series "setup" functionality
-"""
+"""Module to test time_series "setup" functionality"""
 
 import math
 
@@ -14,8 +13,9 @@ from time_series_test_utils import (
     _return_splitter_args,
 )
 
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 ##############################
 # Functions Start Here ####
@@ -47,7 +47,7 @@ def test_splitter_using_fold_and_fh(fold, fh, fold_strategy, load_pos_and_neg_da
 
     from sktime.split import ExpandingWindowSplitter, SlidingWindowSplitter
 
-    from pycaret.time_series import setup
+    from pycarot.time_series import setup
 
     exp_name = setup(
         data=load_pos_and_neg_data,
@@ -80,7 +80,7 @@ def test_splitter_pass_cv_object(load_pos_and_neg_data):
 
     from sktime.split import ExpandingWindowSplitter
 
-    from pycaret.time_series import setup
+    from pycarot.time_series import setup
 
     fold = 3
     fh = np.arange(1, 13)  # regular horizon of 12 months
@@ -113,7 +113,7 @@ def test_splitter_pass_cv_object(load_pos_and_neg_data):
 def test_setup_raises(fold, fh, fold_strategy, load_pos_and_neg_data):
     """Tests conditions that raise an error due to lack of data"""
 
-    from pycaret.time_series import setup
+    from pycarot.time_series import setup
 
     with pytest.raises(ValueError) as errmsg:
         _ = setup(
@@ -382,9 +382,7 @@ def test_sp_to_use_upto_max_sp():
 
     # 1.0 Max SP not specified ----
     exp = TSForecastingExperiment()
-    exp.setup(
-        data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=None
-    )
+    exp.setup(data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=None)
     assert exp.candidate_sps == [12, 24, 36, 11, 48]
     assert exp.significant_sps == [12, 24, 36, 11, 48]
     assert exp.significant_sps_no_harmonics == [48, 36, 11]
@@ -394,9 +392,7 @@ def test_sp_to_use_upto_max_sp():
     # 2.0 Max SP more than at least some detected values ----
     # 2.1 Without removing harmonics
     exp = TSForecastingExperiment()
-    exp.setup(
-        data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=24
-    )
+    exp.setup(data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=24)
     assert exp.candidate_sps == [12, 24, 11]
     assert exp.significant_sps == [12, 24, 11]
     assert exp.significant_sps_no_harmonics == [24, 11]
@@ -405,9 +401,7 @@ def test_sp_to_use_upto_max_sp():
 
     # 2.2 Removing harmonics
     exp = TSForecastingExperiment()
-    exp.setup(
-        data=data, fh=12, session_id=42, remove_harmonics=True, max_sp_to_consider=24
-    )
+    exp.setup(data=data, fh=12, session_id=42, remove_harmonics=True, max_sp_to_consider=24)
     assert exp.candidate_sps == [12, 24, 11]
     assert exp.significant_sps == [12, 24, 11]
     assert exp.significant_sps_no_harmonics == [24, 11]
@@ -417,9 +411,7 @@ def test_sp_to_use_upto_max_sp():
     # 3.0 Max SP less than all detected values ----
     # 3.1 Without removing harmonics
     exp = TSForecastingExperiment()
-    exp.setup(
-        data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=2
-    )
+    exp.setup(data=data, fh=12, session_id=42, remove_harmonics=False, max_sp_to_consider=2)
     assert exp.candidate_sps == []
     assert exp.significant_sps == [1]
     assert exp.significant_sps_no_harmonics == [1]
@@ -428,9 +420,7 @@ def test_sp_to_use_upto_max_sp():
 
     # 3.2 Removing harmonics
     exp = TSForecastingExperiment()
-    exp.setup(
-        data=data, fh=12, session_id=42, remove_harmonics=True, max_sp_to_consider=2
-    )
+    exp.setup(data=data, fh=12, session_id=42, remove_harmonics=True, max_sp_to_consider=2)
     assert exp.candidate_sps == []
     assert exp.significant_sps == [1]
     assert exp.significant_sps_no_harmonics == [1]
@@ -459,9 +449,7 @@ def test_setup_seasonal_period_int(load_pos_and_neg_data, seasonal_key, seasonal
 
 
 @pytest.mark.parametrize("seasonal_period, seasonal_value", _get_seasonal_values())
-def test_setup_seasonal_period_str(
-    load_pos_and_neg_data, seasonal_period, seasonal_value
-):
+def test_setup_seasonal_period_str(load_pos_and_neg_data, seasonal_period, seasonal_value):
     exp = TSForecastingExperiment()
 
     fh = np.arange(1, 13)
@@ -557,17 +545,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.test_transformed.index == data.iloc[-len(fh) :].index)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test_transformed.index == data.iloc[-len(fh) :].index)
 
     # List fh ----
@@ -584,17 +568,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.test_transformed.index == data.iloc[-len(fh) :].index)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test_transformed.index == data.iloc[-len(fh) :].index)
 
     #################################
@@ -615,17 +595,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
     # List fh ----
@@ -642,17 +618,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
     ####################################
@@ -673,17 +645,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
     # List fh ----
@@ -700,17 +668,13 @@ def test_train_test_split_uni_no_exo(load_pos_and_neg_data):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert exp.X_transformed is None
     assert np.all(exp.y_transformed.index == data.index)
     assert exp.X_train_transformed is None
     assert exp.X_test_transformed is None
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
 
@@ -759,19 +723,13 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.test_transformed.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
-    assert np.all(
-        exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.X_test_transformed.index == data.iloc[-len(fh) :].index)
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test_transformed.index == data.iloc[-len(fh) :].index)
 
     # List fh ----
@@ -788,19 +746,13 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.test_transformed.index == data.iloc[-len(fh) :].index)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
-    assert np.all(
-        exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.X_test_transformed.index == data.iloc[-len(fh) :].index)
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert np.all(exp.y_test_transformed.index == data.iloc[-len(fh) :].index)
 
     #################################
@@ -823,9 +775,7 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
@@ -846,9 +796,7 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
@@ -873,20 +821,14 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
-    assert np.all(
-        exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     # Exogenous variables will not have any gaps (only target has gaps)
     assert np.all(exp.X_test_transformed.index == data.iloc[-max(fh) :].index)
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
     # List fh ----
@@ -905,20 +847,14 @@ def test_train_test_split_uni_exo(load_uni_exo_data_target):
     assert np.all(exp.y_train.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test) == len(fh)
     assert np.all(exp.dataset_transformed.index == data.index)
-    assert np.all(
-        exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.test_transformed) == len(fh)
     assert np.all(exp.X_transformed.index == data.index)
     assert np.all(exp.y_transformed.index == data.index)
-    assert np.all(
-        exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.X_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     # Exogenous variables will not have any gaps (only target has gaps)
     assert np.all(exp.X_test_transformed.index == data.iloc[-max(fh) :].index)
-    assert np.all(
-        exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index
-    )
+    assert np.all(exp.y_train_transformed.index == data.iloc[: (len(data) - max(fh))].index)
     assert len(exp.y_test_transformed) == len(fh)
 
 
@@ -1016,9 +952,7 @@ def test_seasonality_type_no_season(index: str, seasonality_type: str):
 
 @pytest.mark.parametrize("index", ["RangeIndex", "DatetimeIndex"])
 @pytest.mark.parametrize("seasonality_type", ["mul", "add", "auto"])
-@pytest.mark.parametrize(
-    "y", _data_seasonal_types_strictly_pos, ids=["data_add", "data_mul"]
-)
+@pytest.mark.parametrize("y", _data_seasonal_types_strictly_pos, ids=["data_add", "data_mul"])
 def test_seasonality_type_with_season_not_strictly_positive(
     index: str, seasonality_type: str, y: pd.Series
 ):
@@ -1050,9 +984,7 @@ def test_seasonality_type_with_season_not_strictly_positive(
 
 @pytest.mark.parametrize("index", ["RangeIndex", "DatetimeIndex"])
 @pytest.mark.parametrize("seasonality_type", ["mul", "add"])
-@pytest.mark.parametrize(
-    "y", _data_seasonal_types_strictly_pos, ids=["data_add", "data_mul"]
-)
+@pytest.mark.parametrize("y", _data_seasonal_types_strictly_pos, ids=["data_add", "data_mul"])
 def test_seasonality_type_user_def_with_season_strictly_pos(
     index: str, seasonality_type: str, y: pd.Series
 ):
@@ -1081,9 +1013,7 @@ def test_seasonality_type_user_def_with_season_strictly_pos(
 
 @pytest.mark.parametrize("index", ["RangeIndex", "DatetimeIndex"])
 @pytest.mark.parametrize("seasonality_type", ["auto"])
-def test_seasonality_type_auto_with_season_strictly_pos(
-    index: str, seasonality_type: str
-):
+def test_seasonality_type_auto_with_season_strictly_pos(index: str, seasonality_type: str):
     """Tests the detection of the seasonality type using the internal auto algorithm
     when data that has seasonality and is strictly positive.
 

@@ -1,10 +1,10 @@
-"""Module to benchmark auto detection of time series seasonal period
-"""
+"""Module to benchmark auto detection of time series seasonal period"""
 
 import pytest
 
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = [
     pytest.mark.benchmark,
@@ -57,9 +57,7 @@ def test_benchmark_sp_to_use_using_auto(
         primary_sp.append(exp.primary_sp_to_use)
 
         sig_sps_no_harmonics.append(exp.significant_sps_no_harmonics)
-        all_sp_no_harmonics.append(
-            exp.significant_sps_no_harmonics[0 : len(exp.all_sps_to_use)]
-        )
+        all_sp_no_harmonics.append(exp.significant_sps_no_harmonics[0 : len(exp.all_sps_to_use)])
         primary_sp_no_harmonics.append(exp.significant_sps_no_harmonics[0])
 
     properties["candidate_sps"] = candidate_sps
@@ -86,22 +84,16 @@ def test_benchmark_sp_to_use_using_auto(
     properties["all_sp_no_harmonics"] = all_sp_no_harmonics
     properties["primary_sp_no_harmonics"] = primary_sp_no_harmonics
 
-    properties["equal_no_harmonics"] = (
-        properties["s"] == properties["primary_sp_no_harmonics"]
-    )
+    properties["equal_no_harmonics"] = properties["s"] == properties["primary_sp_no_harmonics"]
     properties["multiple_no_harmonics"] = (
         properties["primary_sp_no_harmonics"] % properties["s"] == 0
     )
 
-    per_correct_no_harmonics = len(
-        properties.query("equal_no_harmonics == True")
-    ) / len(properties)
+    per_correct_no_harmonics = len(properties.query("equal_no_harmonics == True")) / len(properties)
     per_correct_multiple_no_harmonics = len(
         properties.query("multiple_no_harmonics == True")
     ) / len(properties)
 
     # Current benchmark to beat ----
     assert per_correct_no_harmonics > expected_per_correct_harmonics
-    assert (
-        per_correct_multiple_no_harmonics > expected_per_correct_multiple_no_harmonics
-    )
+    assert per_correct_multiple_no_harmonics > expected_per_correct_multiple_no_harmonics

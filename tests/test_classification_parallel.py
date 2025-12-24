@@ -1,6 +1,6 @@
-import pycaret.classification as pc
-from pycaret.datasets import get_data
-from pycaret.parallel import FugueBackend
+import pycarot.classification as pc
+from pycarot.datasets import get_data
+from pycarot.parallel import FugueBackend
 
 
 def _score_dummy(y_true, y_prob, axis=0):

@@ -1,10 +1,10 @@
-"""Module to test time_series models
-"""
+"""Module to test time_series models"""
 
 import pandas as pd  # type: ignore
 import pytest
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 ##########################
 # Tests Start Here ####

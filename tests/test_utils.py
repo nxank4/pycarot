@@ -5,36 +5,34 @@ import pytest
 import sklearn.model_selection
 import sklearn.preprocessing
 
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
-import pycaret.utils
-from pycaret.utils.constants import LABEL_COLUMN
-from pycaret.utils.generic import check_metric
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
+import pycarot.utils
+from pycarot.utils.constants import LABEL_COLUMN
+from pycarot.utils.generic import check_metric
 
 
 def test_utils():
     # version
-    version = pycaret.utils.version()
+    version = pycarot.utils.version()
     assert isinstance(version, str)
-    version = pycaret.utils.__version__
+    version = pycarot.utils.__version__
     assert isinstance(version, str)
 
     # preparation(classification)
-    data = pycaret.datasets.get_data("juice")
-    train, test = sklearn.model_selection.train_test_split(
-        data, train_size=0.8, random_state=1
-    )
-    clf1 = pycaret.classification.setup(
+    data = pycarot.datasets.get_data("juice")
+    train, test = sklearn.model_selection.train_test_split(data, train_size=0.8, random_state=1)
+    clf1 = pycarot.classification.setup(
         train,
         target="Purchase",
         html=False,
         session_id=123,
         n_jobs=1,
     )
-    model = pycaret.classification.create_model("lightgbm")
-    final_model = pycaret.classification.finalize_model(model)
-    result = pycaret.classification.predict_model(
+    model = pycarot.classification.create_model("lightgbm")
+    final_model = pycarot.classification.finalize_model(model)
+    result = pycarot.classification.predict_model(
         final_model, data=test.drop("Purchase", axis=1), encoded_labels=True
     )
     actual = clf1.pipeline.transform(y=test["Purchase"])
@@ -79,22 +77,18 @@ def test_utils():
     assert mcc <= 1
 
     # preparation(regression)
-    data = pycaret.datasets.get_data("boston")
-    train, test = sklearn.model_selection.train_test_split(
-        data, train_size=0.8, random_state=1
-    )
-    pycaret.regression.setup(
+    data = pycarot.datasets.get_data("boston")
+    train, test = sklearn.model_selection.train_test_split(data, train_size=0.8, random_state=1)
+    pycarot.regression.setup(
         data,
         target="medv",
         html=False,
         session_id=123,
         n_jobs=1,
     )
-    model = pycaret.regression.create_model("lightgbm")
-    final_model = pycaret.regression.finalize_model(model)
-    result = pycaret.regression.predict_model(
-        final_model, data=test.drop("medv", axis=1)
-    )
+    model = pycarot.regression.create_model("lightgbm")
+    final_model = pycarot.regression.finalize_model(model)
+    result = pycarot.regression.predict_model(final_model, data=test.drop("medv", axis=1))
     actual = test["medv"]
     prediction = result[LABEL_COLUMN]
 
@@ -135,7 +129,7 @@ def test_utils():
     npt.assert_almost_equal(mape, 0.045, decimal=2)
 
     # preparation (timeseries)
-    data = pycaret.datasets.get_data("airline", verbose=False)
+    data = pycarot.datasets.get_data("airline", verbose=False)
     train, test = sklearn.model_selection.train_test_split(
         data, train_size=0.8, random_state=1, shuffle=False
     )

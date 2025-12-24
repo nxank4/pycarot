@@ -1,5 +1,4 @@
-"""Module to test time_series "tune_model" BASE functionality
-"""
+"""Module to test time_series "tune_model" BASE functionality"""
 
 import numpy as np
 import pandas as pd
@@ -7,7 +6,8 @@ import pytest
 from sktime.forecasting.compose import ForecastingPipeline
 from time_series_test_utils import _ALL_METRICS
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 ##########################
 # Tests Start Here ####

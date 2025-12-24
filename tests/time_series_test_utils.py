@@ -1,5 +1,4 @@
-"""Helper functions for time series tests
-"""
+"""Helper functions for time series tests"""
 
 import random
 
@@ -8,10 +7,11 @@ import pandas as pd
 from pandas.testing import assert_frame_equal
 from sktime.forecasting.base import ForecastingHorizon
 
-from pycaret.containers.models.time_series import get_all_model_containers
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
-from pycaret.utils.time_series import SeasonalPeriod
+from pycarot.containers.models.time_series import get_all_model_containers
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+from pycarot.utils.time_series import SeasonalPeriod
+
 
 _BLEND_TEST_MODELS = [
     "naive",
@@ -127,10 +127,7 @@ def _get_seasonal_values():
 def _get_seasonal_values_alphanumeric():
     """Check if frequency is alphanumeric and process it as needed"""
     choice_list = ["10", "20", "30", "40", "50", "60"]
-    return [
-        (random.choice(choice_list), k, v.value)
-        for k, v in SeasonalPeriod.__members__.items()
-    ]
+    return [(random.choice(choice_list), k, v.value) for k, v in SeasonalPeriod.__members__.items()]
 
 
 def _check_windows():
@@ -151,9 +148,7 @@ def _return_model_names():
     model_containers = get_all_model_containers(exp)
 
     models_to_ignore = (
-        ["prophet", "ensemble_forecaster"]
-        if _check_windows()
-        else ["ensemble_forecaster"]
+        ["prophet", "ensemble_forecaster"] if _check_windows() else ["ensemble_forecaster"]
     )
 
     model_names_ = []

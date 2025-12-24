@@ -4,7 +4,6 @@ import gc
 import os
 import shutil
 from timeit import Timer
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -13,10 +12,11 @@ import scipy.sparse
 from joblib import Memory
 from joblib.hashing import hash  # noqa
 
-from pycaret.classification import ClassificationExperiment
-from pycaret.datasets import get_data
-from pycaret.internal.memory import fast_hash  # noqa
-from pycaret.regression import RegressionExperiment
+from pycarot.classification import ClassificationExperiment
+from pycarot.datasets import get_data
+from pycarot.internal.memory import fast_hash  # noqa
+from pycarot.regression import RegressionExperiment
+
 
 pytestmark = [
     pytest.mark.benchmark,
@@ -43,7 +43,7 @@ supervised_datasets = supervised_datasets_df[
 @pytest.fixture
 def gc_fixture():
     gc.collect()
-    yield
+    return
 
 
 def _test_synthetic_data(data, repeats: int = 100):
@@ -57,9 +57,7 @@ def _test_synthetic_data(data, repeats: int = 100):
         ).repeat(repeats, 1)
     )
     original_joblib_time = min(
-        Timer("hash(data)", setup="gc.collect()", globals=globals_with_data).repeat(
-            repeats, 1
-        )
+        Timer("hash(data)", setup="gc.collect()", globals=globals_with_data).repeat(repeats, 1)
     )
     print(
         f"Original: {original_joblib_time} vs PyCaret: {pycaret_joblib_time} ({original_joblib_time - pycaret_joblib_time})"
@@ -72,14 +70,10 @@ def _test_real_data(data_name: str, repeats: int = 20):
     globals_with_data = globals().copy()
     globals_with_data["data"] = data
     pycaret_joblib_time = min(
-        Timer(
-            "fast_hash(data)", setup="gc.collect()", globals=globals_with_data
-        ).repeat(repeats, 1)
+        Timer("fast_hash(data)", setup="gc.collect()", globals=globals_with_data).repeat(repeats, 1)
     )
     original_joblib_time = min(
-        Timer("hash(data)", setup="gc.collect()", globals=globals_with_data).repeat(
-            repeats, 1
-        )
+        Timer("hash(data)", setup="gc.collect()", globals=globals_with_data).repeat(repeats, 1)
     )
     print(f"({data_name} {data.shape}")
     print(
@@ -88,9 +82,7 @@ def _test_real_data(data_name: str, repeats: int = 20):
     return original_joblib_time, pycaret_joblib_time
 
 
-def _test_e2e_setup(
-    data: pd.DataFrame, task: str, target: str, memory: str, memory_dir: str
-):
+def _test_e2e_setup(data: pd.DataFrame, task: str, target: str, memory: str, memory_dir: str):
     if task.startswith("Classification"):
         exp = ClassificationExperiment()
     else:
@@ -101,7 +93,7 @@ def _test_e2e_setup(
 
 
 def _test_e2e(
-    exp: Union[ClassificationExperiment, RegressionExperiment],
+    exp: ClassificationExperiment | RegressionExperiment,
     data: pd.DataFrame,
     target: str,
     memory: str,
@@ -131,9 +123,7 @@ def _test_e2e_timeit(
     data_name: pd.DataFrame, task: str, target: str, memory_dir: str, repeats: int = 3
 ):
     globals_with_data = globals().copy()
-    globals_with_data["data"] = get_data(data_name, verbose=False).dropna(
-        subset=[target]
-    )
+    globals_with_data["data"] = get_data(data_name, verbose=False).dropna(subset=[target])
     globals_with_data["task"] = task
     globals_with_data["target"] = target
     globals_with_data["memory_dir"] = os.path.join(memory_dir, "joblib")
@@ -169,9 +159,7 @@ def test_numpy_hashing_performance(gc_fixture):
 def test_numpy_object_hashing_performance(gc_fixture):
     rng = np.random.RandomState(42)
     X_numpy = rng.randint(low=1, high=100, size=(100000, 10)).astype(str).astype(object)
-    original_joblib_time, pycaret_joblib_time = _test_synthetic_data(
-        X_numpy, repeats=20
-    )
+    original_joblib_time, pycaret_joblib_time = _test_synthetic_data(X_numpy, repeats=20)
     assert pycaret_joblib_time < original_joblib_time
     assert pycaret_joblib_time < 2
 

@@ -1,8 +1,8 @@
 import pytest
 
-from pycaret.classification import ClassificationExperiment
-from pycaret.datasets import get_data
-from pycaret.regression import RegressionExperiment
+from pycarot.classification import ClassificationExperiment
+from pycarot.datasets import get_data
+from pycarot.regression import RegressionExperiment
 
 
 @pytest.mark.parametrize("usecase", ("classification", "regression"))
@@ -29,10 +29,7 @@ def test_tunable_voting_estimator(usecase):
 
     # tune blender
     tuned_blender = exp.tune_model(blender_weighted, choose_better=False)
-    assert (
-        tuned_blender.get_params()["weights"]
-        != blender_weighted.get_params()["weights"]
-    )
+    assert tuned_blender.get_params()["weights"] != blender_weighted.get_params()["weights"]
     assert tuned_blender.get_params()["weights"] is not None
 
 
@@ -54,8 +51,5 @@ def test_tunable_mlp(usecase):
     # tune blender
     tuned_mlp = exp.tune_model(mlp, choose_better=False)
     print(tuned_mlp.get_params())
-    assert (
-        tuned_mlp.get_params()["hidden_layer_sizes"]
-        != mlp.get_params()["hidden_layer_sizes"]
-    )
+    assert tuned_mlp.get_params()["hidden_layer_sizes"] != mlp.get_params()["hidden_layer_sizes"]
     assert tuned_mlp.get_params()["hidden_layer_sizes"] is not None

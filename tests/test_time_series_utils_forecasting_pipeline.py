@@ -1,19 +1,19 @@
-"""Module to test time_series forecasting pipeline utils
-"""
+"""Module to test time_series forecasting pipeline utils"""
 
 import numpy as np
 import pytest
 from sktime.forecasting.naive import NaiveForecaster
 
-from pycaret.time_series import TSForecastingExperiment
-from pycaret.utils.time_series.forecasting.models import DummyForecaster
-from pycaret.utils.time_series.forecasting.pipeline import (
+from pycarot.time_series import TSForecastingExperiment
+from pycarot.utils.time_series.forecasting.models import DummyForecaster
+from pycarot.utils.time_series.forecasting.pipeline import (
     _add_model_to_pipeline,
     _are_pipeline_tansformations_empty,
     _get_imputed_data,
     _transformations_present_X,
     _transformations_present_y,
 )
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
@@ -153,9 +153,7 @@ def test_get_imputed_data_exo(load_uni_exo_data_target_missing):
 
     # 2A: Missing Values not Present: No imputation step in Pipeline ----
     exp.setup(data=data_no_miss, target=target, fh=FH)
-    y_imputed, X_imputed = _get_imputed_data(
-        pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss
-    )
+    y_imputed, X_imputed = _get_imputed_data(pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss)
     assert np.array_equal(y_imputed, y_no_miss)
     assert X_imputed.equals(X_no_miss)
 
@@ -167,9 +165,7 @@ def test_get_imputed_data_exo(load_uni_exo_data_target_missing):
         numeric_imputation_target="drift",
         numeric_imputation_exogenous="drift",
     )
-    y_imputed, X_imputed = _get_imputed_data(
-        pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss
-    )
+    y_imputed, X_imputed = _get_imputed_data(pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss)
     assert np.array_equal(y_imputed, y_no_miss)
     assert X_imputed.equals(X_no_miss)
 
@@ -183,9 +179,7 @@ def test_get_imputed_data_exo(load_uni_exo_data_target_missing):
         transform_target="exp",
         transform_exogenous="exp",
     )
-    y_imputed, X_imputed = _get_imputed_data(
-        pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss
-    )
+    y_imputed, X_imputed = _get_imputed_data(pipeline=exp.pipeline, y=y_no_miss, X=X_no_miss)
     assert np.array_equal(y_imputed, y_no_miss)
     assert X_imputed.equals(X_no_miss)
 

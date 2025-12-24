@@ -1,4 +1,4 @@
-name: pycaret
+name: pycarot
 
 on:
   push:
@@ -22,17 +22,17 @@ jobs:
       - name: Run black
         uses: psf/black@stable
         with:
-          src: pycaret tests
+          src: pycarot tests
           version: 24.8.0
       - name: Check imports
         uses: jamescurtin/isort-action@master
         with:
-          sort-paths: pycaret tests
+          sort-paths: pycarot tests
           isort-version: 5.13.2
       - name: Run flake8
         uses: py-actions/flake8@v2
         with:
-          path: pycaret tests
+          path: pycarot tests
           flake8-version: 7.1.1
 
   # JOBS MUST START WITH test !!!!
@@ -45,7 +45,7 @@ jobs:
       - name: Set up Python environment
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.14"
           cache: 'pip' # caching pip dependencies
       - name: Install dependencies
         run: |
@@ -74,7 +74,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-latest', 'windows-latest' ]
-        python-version: [ '3.9', '3.10', '3.11', '3.12' ]
+        python-version: [ '3.11', '3.12', '3.13', '3.14' ]
 
     defaults:
       run:
@@ -112,12 +112,36 @@ jobs:
       - name: Test with pytest
         run: pytest --durations=0 -m "not (benchmark or plotting or tuning_random or tuning_grid)"
 
+  test_latest:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    name: Test with latest dependencies (allowed to fail)
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Install dependencies without upper bounds
+        run: |
+          python -m pip install -U pip uv
+          # Remove upper bounds to test against latest versions
+          sed 's/<[0-9.]*//g; s/<=*[0-9.]*//g' pyproject.toml > pyproject_latest.toml
+          mv pyproject_latest.toml pyproject.toml
+          python -m uv pip install ".[full, test]"
+      - name: Python version and dependency list
+        run: |
+          python --version
+          pip list
+      - name: Test with pytest
+        run: pytest --durations=0 -m "not (benchmark or plotting or tuning_random or tuning_grid)" || echo "Latest deps test failed - expected"
+
   test_plots:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     name: Test plotting
     steps:
@@ -155,7 +179,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     name: Test random tuning
     steps:
@@ -194,7 +218,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     name: Test grid tuning
     steps:
@@ -233,7 +257,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.10", "3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13", "3.14"]
 
     name: Benchmark tests
     steps:

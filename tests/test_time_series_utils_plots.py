@@ -1,20 +1,19 @@
-"""Module to test time_series plotting functionality
-"""
+"""Module to test time_series plotting functionality"""
 
-from typing import List
 
 import pandas as pd  # type: ignore
 import pytest
 from plotly.subplots import make_subplots
 from time_series_test_utils import _ALL_PLOTS
 
-from pycaret.internal.plots.utils.time_series import (
+from pycarot.internal.plots.utils.time_series import (
     ALLOWED_PLOT_DATA_TYPES,
     MULTIPLE_PLOT_TYPES_ALLOWED_AT_ONCE,
     _get_data_types_to_plot,
     _plot_fig_update,
     _reformat_dataframes_for_plots,
 )
+
 
 pytestmark = [
     pytest.mark.filterwarnings("ignore::UserWarning"),
@@ -36,17 +35,15 @@ def test_get_data_types_to_plot(plot):
         ############################################################
         returned_val = _get_data_types_to_plot(plot=plot)
         expected = [ALLOWED_PLOT_DATA_TYPES.get(plot)[0]]
-        assert isinstance(returned_val, List)
+        assert isinstance(returned_val, list)
         assert returned_val == expected
 
         #####################################
         # 2. Allowed values requested ----
         #####################################
         data_types_requested = ALLOWED_PLOT_DATA_TYPES.get(plot)
-        returned_val = _get_data_types_to_plot(
-            plot=plot, data_types_requested=data_types_requested
-        )
-        assert isinstance(returned_val, List)
+        returned_val = _get_data_types_to_plot(plot=plot, data_types_requested=data_types_requested)
+        assert isinstance(returned_val, list)
 
         accepts_multiple = MULTIPLE_PLOT_TYPES_ALLOWED_AT_ONCE.get(plot)
         if accepts_multiple:
@@ -85,11 +82,9 @@ def test_reformat_dataframes_for_plots():
     ]
 
     # 1. Correct Working ----
-    output_dfs = _reformat_dataframes_for_plots(
-        data=input_dfs, labels_suffix=labels_suffix
-    )
+    output_dfs = _reformat_dataframes_for_plots(data=input_dfs, labels_suffix=labels_suffix)
 
-    assert isinstance(output_dfs, List)
+    assert isinstance(output_dfs, list)
     for item, expected_cols in zip(output_dfs, expected_cols):
         assert isinstance(item, pd.DataFrame)
         assert item.columns.to_list() == expected_cols
@@ -97,9 +92,7 @@ def test_reformat_dataframes_for_plots():
     # Error raised ----
     with pytest.raises(ValueError) as errmsg:
         labels_suffix = ["original"]
-        output_dfs = _reformat_dataframes_for_plots(
-            data=input_dfs, labels_suffix=labels_suffix
-        )
+        output_dfs = _reformat_dataframes_for_plots(data=input_dfs, labels_suffix=labels_suffix)
 
     # Capture Error message
     exceptionmsg = errmsg.value.args[0]

@@ -1,16 +1,16 @@
 import pandas as pd
 
-import pycaret.classification
-import pycaret.datasets
-from pycaret.internal.meta_estimators import CustomProbabilityThresholdClassifier
+import pycarot.classification
+import pycarot.datasets
+from pycarot.internal.meta_estimators import CustomProbabilityThresholdClassifier
 
 
 def test_optimize_threshold():
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
+    data = pycarot.datasets.get_data("blood")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="Class",
         html=False,
@@ -18,10 +18,10 @@ def test_optimize_threshold():
     )
 
     # train model
-    lr = pycaret.classification.create_model("lr")
+    lr = pycarot.classification.create_model("lr")
 
     # optimize threshold
-    optimized_data, optimized_model = pycaret.classification.optimize_threshold(
+    optimized_data, optimized_model = pycarot.classification.optimize_threshold(
         lr, return_data=True
     )
     assert isinstance(optimized_data, pd.core.frame.DataFrame)

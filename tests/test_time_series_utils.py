@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pycaret.utils.time_series import (
+from pycarot.utils.time_series import (
     SeasonalPeriod,
     clean_time_index,
     remove_harmonics_from_sp,
@@ -31,14 +31,10 @@ def test_harmonic_removal():
     results = remove_harmonics_from_sp([2, 3, 4, 50])
     assert results == [3, 4, 50]
     # 4.1B Ordered by harmonic max
-    results = remove_harmonics_from_sp(
-        [2, 3, 4, 50], harmonic_order_method="harmonic_max"
-    )
+    results = remove_harmonics_from_sp([2, 3, 4, 50], harmonic_order_method="harmonic_max")
     assert results == [50, 3, 4]
     # 4.1C Ordered by harmonic strength
-    results = remove_harmonics_from_sp(
-        [2, 3, 4, 50], harmonic_order_method="harmonic_strength"
-    )
+    results = remove_harmonics_from_sp([2, 3, 4, 50], harmonic_order_method="harmonic_strength")
     assert results == [4, 3, 50]
 
     # 4.2 More than one removed
@@ -46,22 +42,14 @@ def test_harmonic_removal():
     results = remove_harmonics_from_sp([3, 2, 6, 50])
     assert results == [6, 50]
     # 4.2B Ordered by harmonic max
-    results = remove_harmonics_from_sp(
-        [3, 2, 6, 50], harmonic_order_method="harmonic_max"
-    )
+    results = remove_harmonics_from_sp([3, 2, 6, 50], harmonic_order_method="harmonic_max")
     assert results == [6, 50]
-    results = remove_harmonics_from_sp(
-        [2, 3, 6, 50], harmonic_order_method="harmonic_max"
-    )
+    results = remove_harmonics_from_sp([2, 3, 6, 50], harmonic_order_method="harmonic_max")
     assert results == [50, 6]
     # 4.2C Ordered by harmonic strength
-    results = remove_harmonics_from_sp(
-        [3, 2, 6, 50], harmonic_order_method="harmonic_strength"
-    )
+    results = remove_harmonics_from_sp([3, 2, 6, 50], harmonic_order_method="harmonic_strength")
     assert results == [6, 50]
-    results = remove_harmonics_from_sp(
-        [2, 3, 6, 50], harmonic_order_method="harmonic_strength"
-    )
+    results = remove_harmonics_from_sp([2, 3, 6, 50], harmonic_order_method="harmonic_strength")
     assert results == [6, 50]
 
     # 4.2D Other variants

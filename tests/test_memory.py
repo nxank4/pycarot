@@ -14,9 +14,9 @@ import pytest
 from sklearn.base import BaseEstimator
 from xxhash import xxh128
 
-from pycaret.datasets import get_data
-from pycaret.internal.memory import fast_hash as hash
-from pycaret.regression import RegressionExperiment
+from pycarot.datasets import get_data
+from pycarot.internal.memory import fast_hash as hash
+from pycarot.regression import RegressionExperiment
 
 
 @pytest.fixture(scope="function")
@@ -153,9 +153,7 @@ def test_hash_memmap(tmpdir, coerce_mmap):
     try:
         m = np.memmap(filename, shape=(10, 10), mode="w+")
         a = np.asarray(m)
-        are_hashes_equal = hash(a, coerce_mmap=coerce_mmap) == hash(
-            m, coerce_mmap=coerce_mmap
-        )
+        are_hashes_equal = hash(a, coerce_mmap=coerce_mmap) == hash(m, coerce_mmap=coerce_mmap)
         assert are_hashes_equal == coerce_mmap
     finally:
         if "m" in locals():
@@ -169,7 +167,7 @@ def test_hash_memmap(tmpdir, coerce_mmap):
 # This is also skipped in joblib tests.
 @pytest.mark.skipif(
     sys.platform == "win32",
-    reason="This test is not stable under windows" " for some reason",
+    reason="This test is not stable under windows for some reason",
 )
 def test_hash_numpy_performance():
     rnd = np.random.RandomState(0)
@@ -190,9 +188,7 @@ def test_hash_numpy_performance():
     if time_hash + time_hashlib == 0:
         relative_diff = 0
     else:
-        relative_diff = 0.5 * (
-            abs(time_hash - time_hashlib) / (time_hash + time_hashlib)
-        )
+        relative_diff = 0.5 * (abs(time_hash - time_hashlib) / (time_hash + time_hashlib))
     assert relative_diff < 0.3
 
 
@@ -248,9 +244,7 @@ def test_numpy_dtype_pickling():
     assert hash([complex_dt1, complex_dt1]) == hash(
         [complex_dt1_roundtripped, complex_dt1_roundtripped]
     )
-    assert hash([complex_dt1, complex_dt1]) == hash(
-        [complex_dt1_roundtripped, complex_dt1]
-    )
+    assert hash([complex_dt1, complex_dt1]) == hash([complex_dt1_roundtripped, complex_dt1])
 
 
 def test_hashes_are_different_between_c_and_fortran_contiguous_arrays():

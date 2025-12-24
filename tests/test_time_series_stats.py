@@ -7,8 +7,9 @@ from time_series_test_utils import (
     _return_model_names_for_plots_stats,
 )
 
-from pycaret.time_series import TSForecastingExperiment
-from pycaret.utils.time_series.exceptions import MissingDataError
+from pycarot.time_series import TSForecastingExperiment
+from pycarot.utils.time_series.exceptions import MissingDataError
+
 
 ##############################
 # Functions Start Here ####
@@ -97,9 +98,7 @@ def test_check_stats_data(data, test, data_type):
     # Individual Tests with "order" differences ####
     ###################################################
     # Column Order ----
-    results = exp.check_stats(
-        test=test, data_type=data_type, data_kwargs={"order_list": [1, 2]}
-    )
+    results = exp.check_stats(test=test, data_type=data_type, data_kwargs={"order_list": [1, 2]})
     column_names = list(results.columns)
     for i, name in enumerate(expected_column_order):
         assert column_names[i] == name
@@ -231,12 +230,8 @@ def test_check_stats_alpha(load_pos_and_neg_data):
 
     alpha = 0.2
     results = exp.check_stats(alpha=alpha)
-    assert (
-        results.query("Test == 'White Noise'").iloc[0]["Setting"].get("alpha") == alpha
-    )
-    assert (
-        results.query("Test == 'Stationarity'").iloc[0]["Setting"].get("alpha") == alpha
-    )
+    assert results.query("Test == 'White Noise'").iloc[0]["Setting"].get("alpha") == alpha
+    assert results.query("Test == 'Stationarity'").iloc[0]["Setting"].get("alpha") == alpha
     assert results.query("Test == 'Normality'").iloc[0]["Setting"].get("alpha") == alpha
 
 

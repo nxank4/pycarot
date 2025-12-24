@@ -1,16 +1,16 @@
 import pandas as pd
 
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
 
 
 def test_check_fairness_binary_classification():
     # loading dataset
-    data = pycaret.datasets.get_data("income")
+    data = pycarot.datasets.get_data("income")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="income >50K",
         html=False,
@@ -18,19 +18,19 @@ def test_check_fairness_binary_classification():
     )
 
     # train model
-    lightgbm = pycaret.classification.create_model("lightgbm", fold=3)
+    lightgbm = pycarot.classification.create_model("lightgbm", fold=3)
 
     # check fairness
-    lightgbm_fairness = pycaret.classification.check_fairness(lightgbm, ["sex"])
+    lightgbm_fairness = pycarot.classification.check_fairness(lightgbm, ["sex"])
     assert isinstance(lightgbm_fairness, pd.DataFrame)
 
 
 def test_check_fairness_multiclass_classification():
     # loading dataset
-    data = pycaret.datasets.get_data("iris")
+    data = pycarot.datasets.get_data("iris")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="species",
         html=False,
@@ -39,21 +39,19 @@ def test_check_fairness_multiclass_classification():
     )
 
     # train model
-    lightgbm = pycaret.classification.create_model("lightgbm", cross_validation=False)
+    lightgbm = pycarot.classification.create_model("lightgbm", cross_validation=False)
 
     # check fairness
-    lightgbm_fairness = pycaret.classification.check_fairness(
-        lightgbm, ["sepal_length"]
-    )
+    lightgbm_fairness = pycarot.classification.check_fairness(lightgbm, ["sepal_length"])
     assert isinstance(lightgbm_fairness, pd.DataFrame)
 
 
 def test_check_fairness_regression():
     # loading dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
 
     # initialize setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         html=False,
@@ -61,10 +59,10 @@ def test_check_fairness_regression():
     )
 
     # train model
-    lightgbm = pycaret.regression.create_model("lightgbm", fold=3)
+    lightgbm = pycarot.regression.create_model("lightgbm", fold=3)
 
     # check fairness
-    lightgbm_fairness = pycaret.regression.check_fairness(lightgbm, ["chas"])
+    lightgbm_fairness = pycarot.regression.check_fairness(lightgbm, ["chas"])
     assert isinstance(lightgbm_fairness, pd.DataFrame)
 
 

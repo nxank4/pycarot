@@ -1,5 +1,4 @@
-"""Module to test time_series functionality
-"""
+"""Module to test time_series functionality"""
 
 import numpy as np
 import pandas as pd
@@ -8,7 +7,8 @@ from pandas.testing import assert_frame_equal
 from sktime.forecasting.compose import ForecastingPipeline
 from time_series_test_utils import _return_compare_model_args, _return_model_parameters
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
@@ -244,9 +244,7 @@ def test_compare_models(cross_validation, log_experiment, load_pos_and_neg_data)
         log_plots=log_experiment,
     )
 
-    best_baseline_models = exp.compare_models(
-        n_select=3, cross_validation=cross_validation
-    )
+    best_baseline_models = exp.compare_models(n_select=3, cross_validation=cross_validation)
     assert len(best_baseline_models) == 3
     for best in best_baseline_models:
         assert not isinstance(best, ForecastingPipeline)
@@ -288,7 +286,7 @@ def test_save_load_model_no_setup(load_pos_and_neg_data):
     ########################
     # Functional API ####
     ########################
-    from pycaret.time_series import (
+    from pycarot.time_series import (
         create_model,
         load_model,
         predict_model,
@@ -296,9 +294,7 @@ def test_save_load_model_no_setup(load_pos_and_neg_data):
         setup,
     )
 
-    _ = setup(
-        data=data, fh=fh, fold=fold, fold_strategy="expanding", session_id=42, n_jobs=-1
-    )
+    _ = setup(data=data, fh=fh, fold=fold, fold_strategy="expanding", session_id=42, n_jobs=-1)
     model = create_model("naive")
     expected_predictions = predict_model(model)
     save_model(model, "model_unit_test_func_nosetup")
@@ -355,7 +351,7 @@ def test_save_load_model_setup(load_pos_and_neg_data):
     ########################
     # Functional API ####
     ########################
-    from pycaret.time_series import (
+    from pycarot.time_series import (
         create_model,
         load_model,
         predict_model,
@@ -363,9 +359,7 @@ def test_save_load_model_setup(load_pos_and_neg_data):
         setup,
     )
 
-    _ = setup(
-        data=data, fh=fh, fold=fold, fold_strategy="expanding", session_id=42, n_jobs=-1
-    )
+    _ = setup(data=data, fh=fh, fold=fold, fold_strategy="expanding", session_id=42, n_jobs=-1)
     model = create_model("naive")
     expected_predictions = predict_model(model)
     save_model(model, "model_unit_test_func_setup", model_only=True)

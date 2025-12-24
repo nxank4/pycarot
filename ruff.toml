@@ -1,0 +1,148 @@
+# Ruff configuration for pycarot
+# https://docs.astral.sh/ruff/
+
+target-version = "py311"
+line-length = 100
+
+[lint]
+# Enable recommended rules plus additional useful sets
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "YTT",    # flake8-2020
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "T10",    # flake8-debugger
+    "ISC",    # flake8-implicit-str-concat
+    "ICN",    # flake8-import-conventions
+    "PIE",    # flake8-pie
+    "PYI",    # flake8-pyi
+    "PT",     # flake8-pytest-style
+    "Q",      # flake8-quotes
+    "RSE",    # flake8-raise
+    "RET",    # flake8-return
+    "SIM",    # flake8-simplify
+    "PTH",    # flake8-use-pathlib
+    "PD",     # pandas-vet
+    "NPY",    # numpy-specific rules
+    "RUF",    # Ruff-specific rules
+]
+
+ignore = [
+    "E501",    # Line too long (handled by formatter)
+    "E731",    # Lambda assignment (legacy pycaret pattern)
+    "B008",    # Do not perform function calls in argument defaults (common in ML frameworks)
+    "B905",    # zip strict (not available in 3.9)
+    "SIM108",  # Use ternary (can reduce readability)
+    "RET504",  # Unnecessary variable before return
+    "F403",    # import * usage is pervasive in legacy code
+    "F405",    # import * usage is pervasive in legacy code
+    "NPY002",  # numpy legacy random usage
+    "PD002",   # pandas inplace usage
+    "PD003",   # pandas .isnull/.notnull usage
+    "PD009",   # pandas .iat usage
+    "PD011",   # pandas .values usage
+    "PTH118",  # os.path.join instead of pathlib (legacy)
+    "PTH123",  # builtin open (legacy)
+    "PTH107",  # os.remove instead of pathlib (legacy)
+    "PTH110",  # os.path.exists instead of pathlib (legacy)
+    "C408",    # unnecessary-collection-call (style)
+    "B904",    # raise without from inside except (legacy)
+    "B006",    # mutable default args (legacy patterns)
+    "B007",    # unused loop control variable
+    "PIE810",  # multiple startswith/endswith
+    "SIM210",  # if-expr with True/False
+    "SIM102",  # collapsible-if
+    "PT006",   # pytest parametrization names type
+    "PT007",   # pytest parametrization values type
+    "PT012",   # pytest raises with multiple statements
+    "RUF001",  # ambiguous-unicode-character-string
+    "RUF002",  # ambiguous-unicode-character-docstring
+    "RUF003",  # ambiguous-unicode-character-comment
+    "RUF005",  # collection literal concatenation
+    "RUF013",  # implicit optional
+    "RUF059",  # unused unpacked variable
+    "N803",    # Argument name should be lowercase (sklearn convention)
+    "N806",    # Variable in function should be lowercase (sklearn X, y convention)
+    "N801",    # legacy class naming
+    "N802",    # legacy function naming
+    "N811",    # legacy import aliasing
+    "N812",    # legacy import aliasing
+    "N999",    # legacy module naming
+    "UP007",   # typing | syntax
+    "UP008",   # super() parameters
+    "UP028",   # yield-in-for-loop
+    "UP030",   # format literals
+    "UP031",   # printf string formatting
+    "UP035",   # typing generics
+    "UP036",   # outdated version blocks
+    "B017",    # blind exception in tests
+    "B018",    # useless expression in tests
+    "B020",    # loop variable overrides
+    "B023",    # function uses loop variable
+    "B024",    # abstract class without abstractmethod
+    "B026",    # star-arg after keyword
+    "B027",    # empty method in ABC without decorator
+    "B028",    # stacklevel warnings
+    "SIM103",  # needless bool return
+    "SIM105",  # suppressible exception
+    "SIM118",  # key in dict keys
+    "SIM201",  # negate-equal-op
+    "SIM222",  # expr or True
+    "SIM101",  # duplicate isinstance
+    "SIM102",  # collapsible-if
+    "SIM118",  # key in dict keys
+    "SIM201",  # negate-equal-op
+    "SIM210",  # if True/False
+    "SIM211",  # if expr false true
+    "SIM212",  # twisted arms
+    "SIM222",  # expr or True
+    "RET503",  # implicit return
+    "C404",    # unnecessary list comprehension dict
+    "C414",    # unnecessary double cast
+    "C416",    # unnecessary comprehension
+    "C419",    # unnecessary comprehension in call
+    "ICN001",  # unconventional import alias
+    "PT003",   # implied fixture scope
+    "PT018",   # composite assertion
+    "RUF012",  # mutable class defaults
+    "RUF015",  # unnecessary iterable allocation
+    "RUF043",  # regex match needs raw/escape
+    "PTH206",  # os.sep split
+    "PTH100",  # abspath
+    "PTH103",  # makedirs
+    "PTH113",  # isfile
+    "UP008",   # super call parameters
+]
+
+# Per-file ignores to match legacy setup.cfg patterns
+[lint.per-file-ignores]
+"__init__.py" = ["F401", "I001"]  # Unused imports, import ordering
+"pycarot/distributions.py" = ["F401"]
+"pycarot/internal/preprocess/iterative_imputer.py" = ["F401"]
+"pycarot/internal/display/display_backend.py" = ["F401"]
+"pycarot/containers/models/classification.py" = ["F811"]  # Redefinition
+"pycarot/containers/models/clustering.py" = ["F811"]
+"pycarot/containers/models/regression.py" = ["F811"]
+"pycarot/containers/models/time_series.py" = ["F811"]
+"tests/test_time_series_mlflow.py" = ["F841"]  # Unused variable
+"tests/*.py" = ["N802", "N803", "PT004", "PT011"]  # Test naming flexibility
+
+[lint.isort]
+known-first-party = ["pycarot"]
+force-single-line = false
+lines-after-imports = 2
+
+[lint.flake8-pytest-style]
+fixture-parentheses = false
+mark-parentheses = false
+
+[format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false

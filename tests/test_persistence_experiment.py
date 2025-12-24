@@ -3,17 +3,17 @@ import os
 import joblib
 import pytest
 
-import pycaret.anomaly
-import pycaret.classification
-import pycaret.clustering
-import pycaret.datasets
-import pycaret.regression
-import pycaret.time_series
-from pycaret.anomaly import AnomalyExperiment
-from pycaret.classification import ClassificationExperiment
-from pycaret.clustering import ClusteringExperiment
-from pycaret.regression import RegressionExperiment
-from pycaret.time_series import TSForecastingExperiment
+import pycarot.anomaly
+import pycarot.classification
+import pycarot.clustering
+import pycarot.datasets
+import pycarot.regression
+import pycarot.time_series
+from pycarot.anomaly import AnomalyExperiment
+from pycarot.classification import ClassificationExperiment
+from pycarot.clustering import ClusteringExperiment
+from pycarot.regression import RegressionExperiment
+from pycarot.time_series import TSForecastingExperiment
 
 
 def check_experiment_equality(exp, new_exp):
@@ -33,7 +33,7 @@ def check_experiment_equality(exp, new_exp):
 
 @pytest.mark.parametrize("preprocess_data", (True, False))
 def test_anomaly_persistence(tmpdir, preprocess_data):
-    data = pycaret.datasets.get_data("anomaly")
+    data = pycarot.datasets.get_data("anomaly")
     exp = AnomalyExperiment()
     exp.setup(
         data,
@@ -56,7 +56,7 @@ def test_anomaly_persistence(tmpdir, preprocess_data):
 
 @pytest.mark.parametrize("preprocess_data", (True, False))
 def test_clustering_persistence(tmpdir, preprocess_data):
-    data = pycaret.datasets.get_data("jewellery")
+    data = pycarot.datasets.get_data("jewellery")
     exp = ClusteringExperiment()
     exp.setup(
         data,
@@ -79,7 +79,7 @@ def test_clustering_persistence(tmpdir, preprocess_data):
 
 @pytest.mark.parametrize("preprocess_data", (True, False))
 def test_classification_persistence(tmpdir, preprocess_data):
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     exp = ClassificationExperiment()
     exp.setup(
         data,
@@ -103,7 +103,7 @@ def test_classification_persistence(tmpdir, preprocess_data):
 
 @pytest.mark.parametrize("preprocess_data", (True, False))
 def test_regression_persistence(tmpdir, preprocess_data):
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
     exp = RegressionExperiment()
     exp.setup(
         data,

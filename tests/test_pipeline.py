@@ -1,4 +1,3 @@
-# coding: utf-8
 
 """
 Package: PyCaret
@@ -11,16 +10,16 @@ import pandas as pd
 import pytest
 from sklearn.preprocessing import LabelEncoder
 
-import pycaret.classification
-import pycaret.regression
-from pycaret.datasets import get_data
+import pycarot.classification
+import pycarot.regression
+from pycarot.datasets import get_data
 
 
 @pytest.fixture
 def pipeline():
     """Get a pipeline from atom with/without final estimator."""
     dataset = get_data("juice", verbose=False)
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=dataset,
         polynomial_features=True,
         polynomial_degree=2,
@@ -40,7 +39,7 @@ def test_fit(pipeline):
 def test_transforms_only_y():
     """Assert that the pipeline can transform the target column only."""
     data = get_data("bank", verbose=False)
-    pc = pycaret.classification.setup(
+    pc = pycarot.classification.setup(
         data=data,
         preprocess=False,
         custom_pipeline=("label_encoder", LabelEncoder()),

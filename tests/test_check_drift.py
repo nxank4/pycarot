@@ -3,14 +3,14 @@ import os
 import pytest
 from sklearn.model_selection import train_test_split
 
-import pycaret.classification
-import pycaret.datasets
+import pycarot.classification
+import pycarot.datasets
 
 
 def test_check_drift(tmpdir):
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
-    experiment = pycaret.classification.ClassificationExperiment()
+    data = pycarot.datasets.get_data("blood")
+    experiment = pycarot.classification.ClassificationExperiment()
 
     # initialize setup
     experiment.setup(
@@ -27,9 +27,9 @@ def test_check_drift(tmpdir):
 
 def test_check_drift_no_setup(tmpdir):
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
+    data = pycarot.datasets.get_data("blood")
     reference_data, current_data = train_test_split(data, test_size=0.2, shuffle=False)
-    experiment = pycaret.classification.ClassificationExperiment()
+    experiment = pycarot.classification.ClassificationExperiment()
 
     with pytest.raises(ValueError):
         experiment.check_drift()

@@ -4,8 +4,9 @@ from typing import Any
 import pandas as pd
 import pytest
 
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 os.environ["PYCARET_TESTING"] = "1"
 

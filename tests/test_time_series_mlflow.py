@@ -1,7 +1,7 @@
-"""Module to test time_series "MLflow" functionality
-"""
+"""Module to test time_series "MLflow" functionality"""
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 ##########################
 # Tests Start Here ####
@@ -31,25 +31,19 @@ def test_mlflow_logging(load_pos_and_neg_data):
     # When running locally, there can be multiple experiments with the same name
     # Just get he last one so that the asserts work (otherwise, the count of the
     # various function calls will not match)
-    last_start = mlflow_logs["start_time"].max()  # noqa: F841
-    last_experiment_usi = mlflow_logs.query("start_time == @last_start")[  # noqa: F841
+    last_start = mlflow_logs["start_time"].max()
+    last_experiment_usi = mlflow_logs.query("start_time == @last_start")[
         "tags.USI"
     ].unique()[0]
 
     num_create_models = len(
-        mlflow_logs.query(
-            "`tags.USI` == @last_experiment_usi & `tags.Source` == 'create_model'"
-        )
+        mlflow_logs.query("`tags.USI` == @last_experiment_usi & `tags.Source` == 'create_model'")
     )
     num_tune_models = len(
-        mlflow_logs.query(
-            "`tags.USI` == @last_experiment_usi &`tags.Source` == 'tune_model'"
-        )
+        mlflow_logs.query("`tags.USI` == @last_experiment_usi &`tags.Source` == 'tune_model'")
     )
     num_compare_models = len(
-        mlflow_logs.query(
-            "`tags.USI` == @last_experiment_usi &`tags.Source` == 'compare_models'"
-        )
+        mlflow_logs.query("`tags.USI` == @last_experiment_usi &`tags.Source` == 'compare_models'")
     )
 
     assert num_create_models == 1

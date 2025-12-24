@@ -2,9 +2,10 @@ import sys
 
 import pytest
 
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
+
 
 if sys.platform == "win32":
     pytest.skip("Skipping test module on Windows", allow_module_level=True)
@@ -12,10 +13,10 @@ if sys.platform == "win32":
 
 def test_classification_create_api():
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
+    data = pycarot.datasets.get_data("blood")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="Class",
         html=False,
@@ -23,19 +24,19 @@ def test_classification_create_api():
     )
 
     # train model
-    lr = pycaret.classification.create_model("lr")
+    lr = pycarot.classification.create_model("lr")
 
     # create api
-    pycaret.classification.create_api(lr, "blood_api")
+    pycarot.classification.create_api(lr, "blood_api")
     assert 1 == 1
 
 
 def test_regression_create_api():
     # loading dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
 
     # initialize setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         html=False,
@@ -43,10 +44,10 @@ def test_regression_create_api():
     )
 
     # train model
-    lr = pycaret.regression.create_model("lr")
+    lr = pycarot.regression.create_model("lr")
 
     # create api
-    pycaret.regression.create_api(lr, "boston_api")
+    pycarot.regression.create_api(lr, "boston_api")
     assert 1 == 1
 
 

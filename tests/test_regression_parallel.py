@@ -1,9 +1,9 @@
-import pycaret.regression as pr
-from pycaret.datasets import get_data
+import pycarot.regression as pr
+from pycarot.datasets import get_data
 
 
 def test_regression_parallel():
-    from pycaret.parallel import FugueBackend
+    from pycarot.parallel import FugueBackend
 
     pr.setup(
         data=get_data("insurance", verbose=False),

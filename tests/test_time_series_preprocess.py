@@ -1,5 +1,4 @@
-"""Module to test time_series functionality
-"""
+"""Module to test time_series functionality"""
 
 import os
 
@@ -16,7 +15,8 @@ from time_series_test_utils import (
     _return_model_names_for_missing_data,
 )
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 os.environ["PYCARET_TESTING"] = "1"
@@ -551,12 +551,8 @@ def test_impute_num_exo(load_uni_exo_data_target_missing):
     y_test_check = [impute_val] * len(exp.y_test.values)
 
     X_check = [([impute_val] * exp.X.shape[1]) for _ in range(len(exp.X))]
-    X_train_check = [
-        ([impute_val] * exp.X_train.shape[1]) for _ in range(len(exp.X_train))
-    ]
-    X_test_check = [
-        ([impute_val] * exp.X_test.shape[1]) for _ in range(len(exp.X_test))
-    ]
+    X_train_check = [([impute_val] * exp.X_train.shape[1]) for _ in range(len(exp.X_train))]
+    X_test_check = [([impute_val] * exp.X_test.shape[1]) for _ in range(len(exp.X_test))]
 
     # Due to preprocessing not all 'y' values should be the same
     assert not np.any(exp.y.values == y_check)
@@ -645,12 +641,8 @@ def test_pipeline_after_finalizing(load_pos_and_neg_data_missing):
 
     # Check if pipeline data index (ForecastingPipeline) matches up with
     # the actual model data
-    assert len(loaded_model._y.index) == len(
-        loaded_model.steps[-1][1].steps[-1][1]._y.index
-    )
-    assert np.array_equal(
-        loaded_model._y.index, loaded_model.steps[-1][1].steps[-1][1]._y.index
-    )
+    assert len(loaded_model._y.index) == len(loaded_model.steps[-1][1].steps[-1][1]._y.index)
+    assert np.array_equal(loaded_model._y.index, loaded_model.steps[-1][1].steps[-1][1]._y.index)
 
 
 def test_no_transform_noexo(load_pos_and_neg_data_missing):
@@ -791,16 +783,12 @@ def test_no_transform_exo(load_uni_exo_data_target_missing):
     missing_imputed_data_train = X_train_imputed.loc[missing_index_train]
     missing_imputed_data_test = X_test_imputed.loc[missing_index_test]
     # Just checking first row (all values in row would be missing)
-    assert not missing_imputed_data_train.iloc[0].equals(
-        missing_imputed_data_test.iloc[0]
-    )
+    assert not missing_imputed_data_train.iloc[0].equals(missing_imputed_data_test.iloc[0])
 
     # Test 5 ----
     missing_imputed_data_all_train = X_imputed.loc[missing_index_train]
     # Just checking first row (all values in row would be missing)
-    assert missing_imputed_data_test.iloc[0].equals(
-        missing_imputed_data_all_train.iloc[0]
-    )
+    assert missing_imputed_data_test.iloc[0].equals(missing_imputed_data_all_train.iloc[0])
 
 
 def _continue_negative_value_checks(method):
@@ -809,9 +797,7 @@ def _continue_negative_value_checks(method):
 
     # Negative values are handled in Boc Cox Transformer after sktime 0.20.1
     # https://github.com/sktime/sktime/pull/4770
-    if method == "box-cox" and version.parse(sktime.__version__) >= version.parse(
-        "0.20.1"
-    ):
+    if method == "box-cox" and version.parse(sktime.__version__) >= version.parse("0.20.1"):
         continue_ = False
 
     return continue_

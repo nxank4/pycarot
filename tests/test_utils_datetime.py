@@ -1,11 +1,10 @@
-"""Module to test the datetime utility functions
-"""
+"""Module to test the datetime utility functions"""
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 
-from pycaret.datasets import get_data
-from pycaret.utils.datetime import (
+from pycarot.datasets import get_data
+from pycarot.utils.datetime import (
     coerce_datetime_to_period_index,
     coerce_period_to_datetime_index,
 )
@@ -50,9 +49,7 @@ def test_coerce_period_to_datetime_index():
 
     # Corner condition (Q-DEC with only 2 data points)----
     orig_freq = "Q-DEC"
-    data = pd.DataFrame(
-        [1, 2], index=pd.PeriodIndex(["2018Q2", "2018Q3"], freq=orig_freq)
-    )
+    data = pd.DataFrame([1, 2], index=pd.PeriodIndex(["2018Q2", "2018Q3"], freq=orig_freq))
     new_data = coerce_period_to_datetime_index(data=data)
     assert isinstance(new_data.index, pd.DatetimeIndex)
     assert new_data.index.freq == orig_freq

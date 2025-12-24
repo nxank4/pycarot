@@ -2,8 +2,9 @@ import matplotlib
 import pandas as pd
 import pytest
 
-import pycaret.classification
-import pycaret.datasets
+import pycarot.classification
+import pycarot.datasets
+
 
 # Configure matplotlib to use 'Agg' backend that does not require GUI
 # this line fixes possible errors about tkinter interface
@@ -13,11 +14,11 @@ matplotlib.use("Agg")
 @pytest.mark.plotting
 def test_plot():
     # loading dataset
-    data = pycaret.datasets.get_data("juice")
+    data = pycarot.datasets.get_data("juice")
     assert isinstance(data, pd.DataFrame)
 
     # init setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="Purchase",
         log_experiment=True,
@@ -28,17 +29,17 @@ def test_plot():
         n_jobs=1,
     )
 
-    model = pycaret.classification.create_model("rf", max_depth=2, n_estimators=5)
+    model = pycarot.classification.create_model("rf", max_depth=2, n_estimators=5)
 
-    exp = pycaret.classification.ClassificationExperiment()
+    exp = pycarot.classification.ClassificationExperiment()
     available_plots = exp._available_plots
 
     for plot in available_plots:
-        pycaret.classification.plot_model(model, plot=plot)
+        pycarot.classification.plot_model(model, plot=plot)
 
     models = [
-        pycaret.classification.create_model("et"),
-        pycaret.classification.create_model("xgboost"),
+        pycarot.classification.create_model("et"),
+        pycarot.classification.create_model("xgboost"),
     ]
 
     # no pfi due to dependency hell
@@ -47,8 +48,8 @@ def test_plot():
 
     for model in models:
         for plot in available_shap:
-            pycaret.classification.interpret_model(model, plot=plot)
-            pycaret.classification.interpret_model(
+            pycarot.classification.interpret_model(model, plot=plot)
+            pycarot.classification.interpret_model(
                 model, plot=plot, X_new_sample=data.drop("Purchase", axis=1).iloc[:10]
             )
 

@@ -1,14 +1,15 @@
 import numpy as np
 import pytest
 
-import pycaret.anomaly.functional
-import pycaret.classification.functional
-import pycaret.clustering.functional
-import pycaret.regression.functional
-import pycaret.time_series.forecasting.functional
-from pycaret.containers.models.time_series import get_all_model_containers
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+import pycarot.anomaly.functional
+import pycarot.classification.functional
+import pycarot.clustering.functional
+import pycarot.regression.functional
+import pycarot.time_series.forecasting.functional
+from pycarot.containers.models.time_series import get_all_model_containers
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 #############################
 # Fixtures Start Here ####
@@ -23,11 +24,11 @@ def change_test_dir(tmp_path, monkeypatch):
 @pytest.fixture(autouse=True)
 def reset_experiments():
     yield
-    pycaret.classification.functional._CURRENT_EXPERIMENT = None
-    pycaret.regression.functional._CURRENT_EXPERIMENT = None
-    pycaret.anomaly.functional._CURRENT_EXPERIMENT = None
-    pycaret.clustering.functional._CURRENT_EXPERIMENT = None
-    pycaret.time_series.forecasting.functional._CURRENT_EXPERIMENT = None
+    pycarot.classification.functional._CURRENT_EXPERIMENT = None
+    pycarot.regression.functional._CURRENT_EXPERIMENT = None
+    pycarot.anomaly.functional._CURRENT_EXPERIMENT = None
+    pycarot.clustering.functional._CURRENT_EXPERIMENT = None
+    pycarot.time_series.forecasting.functional._CURRENT_EXPERIMENT = None
 
 
 @pytest.fixture(scope="session", name="load_pos_data")
@@ -139,9 +140,7 @@ def load_ts_models(load_setup):
     )
 
     ts_estimators = [
-        exp.create_model(key)
-        for key in model_containers.keys()
-        if key in _BLEND_TEST_MODELS
+        exp.create_model(key) for key in model_containers.keys() if key in _BLEND_TEST_MODELS
     ]
 
     return ts_estimators

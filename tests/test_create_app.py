@@ -1,14 +1,14 @@
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
 
 
 def test_classification_create_app():
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
+    data = pycarot.datasets.get_data("blood")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="Class",
         html=False,
@@ -16,7 +16,7 @@ def test_classification_create_app():
     )
 
     # train model
-    pycaret.classification.create_model("lr")
+    pycarot.classification.create_model("lr")
 
     # create app
     # pycaret.classification.create_app(lr) #disabling test because it get stuck on git
@@ -25,10 +25,10 @@ def test_classification_create_app():
 
 def test_regression_create_app():
     # loading dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
 
     # initialize setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         html=False,
@@ -36,7 +36,7 @@ def test_regression_create_app():
     )
 
     # train model
-    pycaret.regression.create_model("lr")
+    pycarot.regression.create_model("lr")
 
     # create app
     # pycaret.regression.create_app(lr) #disabling test because it get stuck on git

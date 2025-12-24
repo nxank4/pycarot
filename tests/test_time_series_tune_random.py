@@ -1,12 +1,12 @@
-"""Module to test time_series functionality
-"""
+"""Module to test time_series functionality"""
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 from time_series_test_utils import _return_model_names
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = [
     pytest.mark.filterwarnings("ignore::UserWarning"),

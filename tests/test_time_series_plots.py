@@ -1,5 +1,4 @@
-"""Module to test time_series plotting functionality
-"""
+"""Module to test time_series plotting functionality"""
 
 import os
 import sys
@@ -15,8 +14,9 @@ from time_series_test_utils import (
     _return_model_names_for_plots_stats,
 )
 
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 os.environ["PYCARET_TESTING"] = "1"
@@ -78,7 +78,7 @@ def test_plot_model_data(data, plot):
     ########################
     # Functional API ####
     ########################
-    from pycaret.time_series import plot_model, setup
+    from pycarot.time_series import plot_model, setup
 
     _ = setup(
         data=data,
@@ -122,7 +122,7 @@ def test_plot_model_estimator(model_name, data, plot):
     ########################
     # Functional API ####
     ########################
-    from pycaret.time_series import create_model, plot_model, setup
+    from pycarot.time_series import create_model, plot_model, setup
 
     _ = setup(
         data=data,
@@ -166,10 +166,7 @@ def test_plot_model_data_raises(load_pos_and_neg_data, plot):
     exceptionmsg = errmsg.value.args[0]
 
     # Check exact error received
-    assert (
-        f"Plot type '{plot}' is not supported when estimator is not provided"
-        in exceptionmsg
-    )
+    assert f"Plot type '{plot}' is not supported when estimator is not provided" in exceptionmsg
 
 
 @pytest.mark.parametrize("data", _data_with_without_period_index)
@@ -267,9 +264,7 @@ def test_plot_model_return_data_estimator(data, model_name, plot):
 
 
 @pytest.mark.parametrize("plot, all_models_supported", _all_plots_estimator_ts_results)
-def test_plot_multiple_model_overlays(
-    load_pos_and_neg_data, plot, all_models_supported
-):
+def test_plot_multiple_model_overlays(load_pos_and_neg_data, plot, all_models_supported):
     """Tests the plot_model functionality on estimators where the results from
     multiple models get overlaid (time series plots)
 
@@ -342,9 +337,7 @@ def test_plot_multiple_model_overlays(
     exceptionmsg = errmsg.value.args[0]
 
     # Check exact error received
-    assert (
-        "Please provide a label corresponding to each model to proceed." in exceptionmsg
-    )
+    assert "Please provide a label corresponding to each model to proceed." in exceptionmsg
 
     # (B) More labels than models ----
     labels = ["Model 1", "Model 2", "Model 3"]
@@ -355,9 +348,7 @@ def test_plot_multiple_model_overlays(
     exceptionmsg = errmsg.value.args[0]
 
     # Check exact error received
-    assert (
-        "Please provide a label corresponding to each model to proceed." in exceptionmsg
-    )
+    assert "Please provide a label corresponding to each model to proceed." in exceptionmsg
 
 
 def test_plot_final_model_exo():
@@ -368,7 +359,7 @@ def test_plot_final_model_exo():
     target = "Consumption"
     FH = 3
     train = data.iloc[: int(len(data) - FH)]
-    test = data.iloc[int(len(data)) - FH :]
+    test = data.iloc[len(data) - FH :]
     test = test.drop(columns=[target], axis=1)
 
     exp = TSForecastingExperiment()

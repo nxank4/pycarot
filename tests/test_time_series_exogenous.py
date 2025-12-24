@@ -1,12 +1,12 @@
-"""Module to test time_series forecasting - univariate with exogenous variables
-"""
+"""Module to test time_series forecasting - univariate with exogenous variables"""
 
 import numpy as np  # type: ignore
 import pandas as pd  # type: ignore
 import pytest
 
-from pycaret.time_series import TSForecastingExperiment
-from pycaret.utils.time_series import TSApproachTypes, TSExogenousPresent
+from pycarot.time_series import TSForecastingExperiment
+from pycarot.utils.time_series import TSApproachTypes, TSExogenousPresent
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
@@ -133,7 +133,7 @@ def test_setup():
     """Test the setup with exogenous variables"""
     length = 100
     data = pd.DataFrame(np.random.rand(length, 7))
-    data.columns = "A B C D E F G".split()
+    data.columns = ["A", "B", "C", "D", "E", "F", "G"]
     data["B"] = pd.date_range("20130101", periods=length)
     target = "A"
     index = "B"  # NOTE: When index is provided we do not need to pass seasonal_period
@@ -208,7 +208,7 @@ def test_setup_raises():
     """Test the setup with exogenous variables when it raises errors"""
     length = 100
     data = pd.DataFrame(np.random.rand(length, 7))
-    data.columns = "A B C D E F G".split()
+    data.columns = ["A", "B", "C", "D", "E", "F", "G"]
 
     exp = TSForecastingExperiment()
 

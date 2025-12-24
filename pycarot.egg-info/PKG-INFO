@@ -1,0 +1,370 @@
+Metadata-Version: 2.4
+Name: pycarot
+Version: 3.4.0
+Summary: PyCaret - An open source, low-code machine learning library in Python.
+Author: pycaret developers
+Maintainer: pycaret developers
+License: MIT License
+        
+        Copyright (c) 2024 PyCaret
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: API Reference, https://pycaret.gitbook.io/
+Project-URL: Documentation, https://pycaret.gitbook.io/
+Project-URL: Download, https://pypi.org/project/pycaret/#files
+Project-URL: Homepage, https://pycaret.org/
+Project-URL: Release Notes, https://github.com/pycaret/pycaret/releases
+Project-URL: Repository, https://github.com/pycaret/pycaret
+Keywords: data-mining,data-science,classification,clustering,detection,forecasting,machine-learning,regression,scikit-learn<1.5,time-series
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: Unix
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Requires-Python: <3.15,>=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: ipython>=8.20
+Requires-Dist: ipywidgets>=8.1.0
+Requires-Dist: tqdm>=4.66.0
+Requires-Dist: numpy<2.2,>=1.26
+Requires-Dist: pandas<2.5,>=2.1
+Requires-Dist: jinja2>=3.1
+Requires-Dist: scipy<1.15,>=1.12
+Requires-Dist: joblib<1.7,>=1.3
+Requires-Dist: scikit-learn<1.8,>=1.4
+Requires-Dist: pyod>=1.1.3
+Requires-Dist: imbalanced-learn<0.15.0,>=0.13.0
+Requires-Dist: category-encoders>=2.6.0
+Requires-Dist: lightgbm>=4.3.0
+Requires-Dist: numba>=0.59.0
+Requires-Dist: requests>=2.31.0
+Requires-Dist: psutil>=5.9.0
+Requires-Dist: markupsafe>=2.1.0
+Requires-Dist: importlib_metadata>=6.0.0; python_version < "3.12"
+Requires-Dist: nbformat>=5.9.0
+Requires-Dist: cloudpickle>=2.2.0
+Requires-Dist: deprecation>=2.1.0
+Requires-Dist: xxhash>=3.0.0
+Requires-Dist: wurlitzer>=3.0; platform_system != "Windows"
+Requires-Dist: setuptools>=69.0
+Requires-Dist: matplotlib<3.12,>=3.9
+Requires-Dist: mljar-scikit-plot>=0.3.7
+Requires-Dist: yellowbrick>=1.5
+Requires-Dist: plotly>=5.18.0
+Requires-Dist: kaleido>=0.2.1
+Requires-Dist: schemdraw>=0.18
+Requires-Dist: plotly-resampler>=0.10.0
+Requires-Dist: statsmodels>=0.14.0
+Requires-Dist: sktime<0.33,>=0.31.0
+Requires-Dist: tbats>=1.1.3
+Requires-Dist: pmdarima>=2.0.4
+Provides-Extra: full
+Requires-Dist: shap>=0.45.0; extra == "full"
+Requires-Dist: interpret>=0.6.0; extra == "full"
+Requires-Dist: umap-learn>=0.5.5; extra == "full"
+Requires-Dist: pyyaml>=6.0; extra == "full"
+Requires-Dist: ydata-profiling>=4.6.0; extra == "full"
+Requires-Dist: explainerdashboard>=0.4.0; extra == "full"
+Requires-Dist: fairlearn>=0.10.0; extra == "full"
+Requires-Dist: xgboost>=2.1.0; extra == "full"
+Requires-Dist: catboost>=1.2.5; extra == "full"
+Requires-Dist: kmodes>=0.12.0; extra == "full"
+Requires-Dist: mlxtend>=0.23.0; extra == "full"
+Requires-Dist: statsforecast<1.9,>=1.7; extra == "full"
+Requires-Dist: scikit-learn-intelex>=2024.5; (platform_machine == "x86_64" or platform_machine == "AMD64") and extra == "full"
+Requires-Dist: tune-sklearn>=0.5.0; extra == "full"
+Requires-Dist: ray[tune]>=2.9.0; extra == "full"
+Requires-Dist: hyperopt>=0.2.7; extra == "full"
+Requires-Dist: optuna>=3.5.0; extra == "full"
+Requires-Dist: optuna-integration>=3.5.0; extra == "full"
+Requires-Dist: scikit-optimize>=0.9.0; extra == "full"
+Requires-Dist: mlflow>=2.10.0; extra == "full"
+Requires-Dist: gradio>=4.0.0; extra == "full"
+Requires-Dist: boto3>=1.34.0; extra == "full"
+Requires-Dist: fastapi>=0.109.0; extra == "full"
+Requires-Dist: uvicorn>=0.27.0; extra == "full"
+Requires-Dist: m2cgen>=0.10.0; extra == "full"
+Requires-Dist: evidently>=0.4.35; extra == "full"
+Requires-Dist: dask>=2024.1; extra == "full"
+Requires-Dist: distributed>=2024.1; extra == "full"
+Requires-Dist: fugue>=0.9.1; extra == "full"
+Requires-Dist: flask>=3.0.0; extra == "full"
+Requires-Dist: Werkzeug>=3.0.0; extra == "full"
+Requires-Dist: pytest>=8.0.0; extra == "full"
+Requires-Dist: moto>=5.0.0; extra == "full"
+Requires-Dist: fugue[dask]; extra == "full"
+Requires-Dist: dash[testing]; extra == "full"
+Requires-Dist: black>=24.8.0; extra == "full"
+Requires-Dist: isort>=5.13.2; extra == "full"
+Requires-Dist: ruff>=0.8.0; extra == "full"
+Requires-Dist: setuptools>=75.0.0; extra == "full"
+Requires-Dist: mypy>=1.11.0; extra == "full"
+Provides-Extra: analysis
+Requires-Dist: shap>=0.45.0; extra == "analysis"
+Requires-Dist: interpret>=0.6.0; extra == "analysis"
+Requires-Dist: umap-learn>=0.5.5; extra == "analysis"
+Requires-Dist: pyyaml>=6.0; extra == "analysis"
+Requires-Dist: ydata-profiling>=4.6.0; extra == "analysis"
+Requires-Dist: explainerdashboard>=0.4.0; extra == "analysis"
+Requires-Dist: fairlearn>=0.10.0; extra == "analysis"
+Provides-Extra: models
+Requires-Dist: xgboost>=2.1.0; extra == "models"
+Requires-Dist: catboost>=1.2.5; extra == "models"
+Requires-Dist: kmodes>=0.12.0; extra == "models"
+Requires-Dist: mlxtend>=0.23.0; extra == "models"
+Requires-Dist: statsforecast<1.9,>=1.7; extra == "models"
+Requires-Dist: scikit-learn-intelex>=2024.5; (platform_machine == "x86_64" or platform_machine == "AMD64") and extra == "models"
+Provides-Extra: tuners
+Requires-Dist: tune-sklearn>=0.5.0; extra == "tuners"
+Requires-Dist: ray[tune]>=2.9.0; extra == "tuners"
+Requires-Dist: hyperopt>=0.2.7; extra == "tuners"
+Requires-Dist: optuna>=3.5.0; extra == "tuners"
+Requires-Dist: optuna-integration>=3.5.0; extra == "tuners"
+Requires-Dist: scikit-optimize>=0.9.0; extra == "tuners"
+Provides-Extra: mlops
+Requires-Dist: mlflow>=2.10.0; extra == "mlops"
+Requires-Dist: gradio>=4.0.0; extra == "mlops"
+Requires-Dist: boto3>=1.34.0; extra == "mlops"
+Requires-Dist: fastapi>=0.109.0; extra == "mlops"
+Requires-Dist: uvicorn>=0.27.0; extra == "mlops"
+Requires-Dist: m2cgen>=0.10.0; extra == "mlops"
+Requires-Dist: evidently>=0.4.35; extra == "mlops"
+Provides-Extra: parallel
+Requires-Dist: dask>=2024.1; extra == "parallel"
+Requires-Dist: distributed>=2024.1; extra == "parallel"
+Requires-Dist: fugue>=0.9.1; extra == "parallel"
+Requires-Dist: flask>=3.0.0; extra == "parallel"
+Requires-Dist: Werkzeug>=3.0.0; extra == "parallel"
+Provides-Extra: prophet
+Requires-Dist: prophet>=1.0.1; extra == "prophet"
+Provides-Extra: dev
+Requires-Dist: black>=24.8.0; extra == "dev"
+Requires-Dist: isort>=5.13.2; extra == "dev"
+Requires-Dist: ruff>=0.8.0; extra == "dev"
+Requires-Dist: flake8>=7.1.1; extra == "dev"
+Requires-Dist: setuptools>=75.0.0; extra == "dev"
+Requires-Dist: mypy>=1.11.0; extra == "dev"
+Provides-Extra: test
+Requires-Dist: pytest>=8.0.0; extra == "test"
+Requires-Dist: moto>=5.0.0; extra == "test"
+Requires-Dist: fugue[dask]; extra == "test"
+Requires-Dist: dash[testing]; extra == "test"
+Dynamic: license-file
+
+<div align="center">
+
+<img src="docs/images/carot.png" alt="Pycarot logo" width="200"/>
+
+## **Pycarot: revamped low-code ML toolkit**
+Modernized from PyCaret with updated deps, tooling, and Python 3.11–3.14 support.
+
+`pip install --upgrade pycarot`
+
+
+
+![quick start](docs/images/quick_start.gif)
+
+<div align="left">
+
+# Pycarot at a glance
+- Low-code ML workflows (classification, regression, clustering, anomaly, time series)
+- Modern stack: Python 3.11–3.14, refreshed dependencies, uv-based dev flow
+- Batteries included: plotting, MLOps hooks, tuning, model persistence
+
+# 🚀 Installation
+
+## ⚡ Option 0: Build and develop with uv
+`uv` is a fast Python package manager. It uses standard `pyproject.toml` and supports dependency groups. Set up a local dev environment and build the package:
+
+```bash
+# Install uv (one-time)
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Create and sync a virtual env with dev + test deps
+uv sync --group dev --group test
+
+# Run tests
+uv run pytest -q
+
+# Build sdist and wheel
+uv build
+
+# Install locally (editable)
+uv pip install -e .
+```
+
+Dependency groups are defined in `pyproject.toml` (`dev`, `test`, `full`).
+
+## 🌐 Option 1: Install via PyPI
+Supported: Python 3.11–3.14 on 64-bit Linux/Windows.
+
+Install from PyPI:
+
+```bash
+pip install pycarot
+```
+
+Optional extras:
+
+```bash
+pip install pycarot[analysis]
+pip install pycarot[models]
+pip install pycarot[tuner]
+pip install pycarot[mlops]
+pip install pycarot[parallel]
+pip install pycarot[test]
+pip install pycarot[dev]
+
+# multiple extras
+pip install pycarot[analysis,models]
+
+# everything
+pip install pycarot[full]
+```
+## 📄 Option 2: Build from Source
+Install the development version of the library directly from the source. The API may be unstable. It is not recommended for production use.
+
+```python
+pip install git+https://github.com/pycaret/pycarot.git@master --upgrade
+```
+## 🏃‍♂️ Quickstart
+
+### Functional API
+```python
+# Classification Functional API Example
+
+# loading sample dataset
+from pycarot.datasets import get_data
+data = get_data('juice')
+
+# init setup
+from pycarot.classification import *
+s = setup(data, target = 'Purchase', session_id = 123)
+
+# model training and selection
+best = compare_models()
+
+# evaluate trained model
+evaluate_model(best)
+
+# predict on hold-out/test set
+pred_holdout = predict_model(best)
+
+# predict on new data
+new_data = data.copy().drop('Purchase', axis = 1)
+predictions = predict_model(best, data = new_data)
+
+# save model
+save_model(best, 'best_pipeline')
+```
+
+### 2. OOP API
+
+```python
+# Classification OOP API Example
+
+# loading sample dataset
+from pycarot.datasets import get_data
+data = get_data('juice')
+
+# init setup
+from pycarot.classification import ClassificationExperiment
+s = ClassificationExperiment()
+s.setup(data, target = 'Purchase', session_id = 123)
+
+# model training and selection
+best = s.compare_models()
+
+# evaluate trained model
+s.evaluate_model(best)
+
+# predict on hold-out/test set
+pred_holdout = s.predict_model(best)
+
+# predict on new data
+new_data = data.copy().drop('Purchase', axis = 1)
+predictions = s.predict_model(best, data = new_data)
+
+# save model
+s.save_model(best, 'best_pipeline')
+```
+
+
+## 📁 Modules
+<div align="center">
+
+## **Classification**
+
+  Functional API           |  OOP API
+:-------------------------:|:-------------------------:
+![](docs/images/classification_functional.png)  | ![](docs/images/classification_OOP.png)
+
+## **Regression**
+
+  Functional API           |  OOP API
+:-------------------------:|:-------------------------:
+![](docs/images/regression_functional.png)  | ![](docs/images/regression_OOP.png)
+
+## **Time Series**
+
+  Functional API           |  OOP API
+:-------------------------:|:-------------------------:
+![](docs/images/time_series_functional.png)  | ![](docs/images/time_series_OOP.png)
+
+## **Clustering**
+
+  Functional API           |  OOP API
+:-------------------------:|:-------------------------:
+![](docs/images/clustering_functional.png)  | ![](docs/images/clustering_OOP.png)
+
+## **Anomaly Detection**
+
+  Functional API           |  OOP API
+:-------------------------:|:-------------------------:
+![](docs/images/anomaly_functional.png)  | ![](docs/images/anomaly_OOP.png)
+
+<div align="left">
+
+# 👥 Who should use Pycarot?
+Pycarot is an open source library for:
+
+- Experienced Data Scientists who want to increase productivity.
+- Citizen Data Scientists who prefer a low code machine learning solution.
+- Data Science Professionals who want to build rapid prototypes.
+- Data Science and Machine Learning students and enthusiasts.
+
+# 📝 License
+Pycarot is free and open-source under the [MIT](https://github.com/pycaret/pycarot/blob/master/LICENSE) license.
+
+# 🙌 Credits
+- Built on the shoulders of the original PyCaret project and its contributors.
+- Thanks to the broader open-source ML ecosystem (scikit-learn, pandas, lightgbm, xgboost, sktime, etc.).

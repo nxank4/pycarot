@@ -1,5 +1,4 @@
-"""Module to test time_series functionality
-"""
+"""Module to test time_series functionality"""
 
 import numpy as np
 import pytest
@@ -8,7 +7,8 @@ from sktime.transformations.series.date import DateTimeFeatures
 from sktime.transformations.series.summarize import WindowSummarizer
 from time_series_test_utils import assert_frame_not_equal
 
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.time_series import TSForecastingExperiment
+
 
 pytestmark = pytest.mark.filterwarnings("ignore::UserWarning")
 
@@ -59,9 +59,7 @@ def test_fe_target(load_pos_and_neg_data):
 
 # TODO: Ensure 'naive' works with this test.
 # "model, expected_equal", [("arima", False), ("lr_cds_dt", False), ("naive", True)]
-@pytest.mark.parametrize(
-    "model, expected_equal", [("arima", False), ("lr_cds_dt", False)]
-)
+@pytest.mark.parametrize("model, expected_equal", [("arima", False), ("lr_cds_dt", False)])
 def test_fe_exogenous(load_uni_exo_data_target, model, expected_equal):
     """Test custom feature engineering for exogenous variables (applicable to all models)."""
     data, target = load_uni_exo_data_target
@@ -85,9 +83,7 @@ def test_fe_exogenous(load_uni_exo_data_target, model, expected_equal):
     fe_exogenous = [
         (
             "a",
-            WindowSummarizer(
-                n_jobs=1, target_cols=["Income"], truncate="bfill", **kwargs1
-            ),
+            WindowSummarizer(n_jobs=1, target_cols=["Income"], truncate="bfill", **kwargs1),
         ),
         (
             "b",

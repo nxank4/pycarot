@@ -1,5 +1,4 @@
-"""Module to test time_series `blend_model` functionality
-"""
+"""Module to test time_series `blend_model` functionality"""
 
 import random
 
@@ -7,8 +6,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from pycaret.datasets import get_data
-from pycaret.time_series import TSForecastingExperiment
+from pycarot.datasets import get_data
+from pycarot.time_series import TSForecastingExperiment
+
 
 ##########################
 # Tests Start Here ####
@@ -109,12 +109,12 @@ def test_blend_model_predict(load_setup, load_models):
     # Prediction for some methods should not be impacted by weights
     # e.g. min, max
     # -------------------------------------------------------------------------#
-    assert np.array_equal(
-        min_blender_pred, min_blender_w_wts_pred
-    ), "min blender predictions with and without weights are not the same"
-    assert np.array_equal(
-        max_blender_pred, max_blender_w_wts_pred
-    ), "max blender predictions with and without weights are not the same"
+    assert np.array_equal(min_blender_pred, min_blender_w_wts_pred), (
+        "min blender predictions with and without weights are not the same"
+    )
+    assert np.array_equal(max_blender_pred, max_blender_w_wts_pred), (
+        "max blender predictions with and without weights are not the same"
+    )
 
 
 def test_blend_model_custom_folds(load_pos_and_neg_data):

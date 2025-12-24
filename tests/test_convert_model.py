@@ -1,14 +1,14 @@
-import pycaret.classification
-import pycaret.datasets
-import pycaret.regression
+import pycarot.classification
+import pycarot.datasets
+import pycarot.regression
 
 
 def test_classification_convert_model():
     # loading dataset
-    data = pycaret.datasets.get_data("blood")
+    data = pycarot.datasets.get_data("blood")
 
     # initialize setup
-    pycaret.classification.setup(
+    pycarot.classification.setup(
         data,
         target="Class",
         html=False,
@@ -16,19 +16,19 @@ def test_classification_convert_model():
     )
 
     # train model
-    lr = pycaret.classification.create_model("lr")
+    lr = pycarot.classification.create_model("lr")
 
     # convert model
-    lr_java = pycaret.classification.convert_model(lr, "java")
+    lr_java = pycarot.classification.convert_model(lr, "java")
     assert isinstance(lr_java, str)
 
 
 def test_regression_convert_model():
     # loading dataset
-    data = pycaret.datasets.get_data("boston")
+    data = pycarot.datasets.get_data("boston")
 
     # initialize setup
-    pycaret.regression.setup(
+    pycarot.regression.setup(
         data,
         target="medv",
         html=False,
@@ -36,10 +36,10 @@ def test_regression_convert_model():
     )
 
     # train model
-    lr = pycaret.regression.create_model("lr")
+    lr = pycarot.regression.create_model("lr")
 
     # convert model
-    lr_java = pycaret.regression.convert_model(lr, "java")
+    lr_java = pycarot.regression.convert_model(lr, "java")
     assert isinstance(lr_java, str)
 
 

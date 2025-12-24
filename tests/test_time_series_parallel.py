@@ -1,6 +1,6 @@
-import pycaret.time_series as pt
-from pycaret.datasets import get_data
-from pycaret.parallel import FugueBackend
+import pycarot.time_series as pt
+from pycarot.datasets import get_data
+from pycarot.parallel import FugueBackend
 
 
 def test_ts_parallel():
