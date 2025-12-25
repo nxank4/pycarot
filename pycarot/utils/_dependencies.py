@@ -2,23 +2,23 @@
 # https://github.com/sktime/sktime/blob/v0.11.0/sktime/utils/validation/_dependencies.py
 
 import sys
-from distutils.version import LooseVersion
 from importlib import import_module
 
 from importlib_metadata import distributions
+from packaging.version import Version
 
 from pycarot.internal.logging import get_logger, redirect_output
 
 
 logger = get_logger()
 
-INSTALLED_MODULES = None
+INSTALLED_MODULES: dict[str, Version | None] = {}
 
 
 def _try_import_and_get_module_version(
     modname: str,
-) -> LooseVersion | bool | None:
-    """Returns False if module is not installed, None if version is not available"""
+) -> Version | None:
+    """Returns None if module is not installed, None if version is not available"""
     try:
         if modname in sys.modules:
             mod = sys.modules[modname]
@@ -33,15 +33,15 @@ def _try_import_and_get_module_version(
         except AttributeError:
             # Version could not be obtained
             ver = None
-    except ImportError:
-        ver = False
+    except Exception:
+        ver = None
     if ver:
-        ver = LooseVersion(ver)
+        ver = Version(ver)
     return ver
 
 
 # Based on packages_distributions() from importlib_metadata
-def get_installed_modules() -> dict[str, LooseVersion | None]:
+def get_installed_modules() -> dict[str, Version | None]:
     """
     Get installed modules and their versions from pip metadata.
     """
@@ -57,7 +57,10 @@ def get_installed_modules() -> dict[str, LooseVersion | None]:
         for dist in distributions():
             for pkg in (dist.read_text("top_level.txt") or "").split():
                 try:
-                    ver = LooseVersion(dist.metadata["Version"])
+                    if dist.metadata is not None:
+                        ver = Version(dist.metadata["Version"])
+                    else:
+                        ver = None
                 except Exception:
                     ver = None
                 module_versions[pkg] = ver
@@ -65,10 +68,10 @@ def get_installed_modules() -> dict[str, LooseVersion | None]:
     return INSTALLED_MODULES
 
 
-def _get_module_version(modname: str) -> LooseVersion | bool | None:
+def _get_module_version(modname: str) -> Version | None:
     """Will cache the version in INSTALLED_MODULES
 
-    Returns False if module is not installed."""
+    Returns None if module is not installed."""
     installed_modules = get_installed_modules()
     if modname not in installed_modules:
         # Fallback. This should never happen unless module is not present
@@ -76,11 +79,11 @@ def _get_module_version(modname: str) -> LooseVersion | bool | None:
     return installed_modules[modname]
 
 
-def get_module_version(modname: str) -> LooseVersion | None:
+def get_module_version(modname: str) -> Version | None:
     """Raises a ValueError if module is not installed"""
     version = _get_module_version(modname)
-    if version is False:
-        raise ValueError(f"Module '{modname}' is not installed.")
+    if version is None:
+        raise ValueError(f"Module '{modname}' is not installed")
     return version
 
 
