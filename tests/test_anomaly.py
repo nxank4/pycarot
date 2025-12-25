@@ -2,7 +2,7 @@ import uuid
 
 import pandas as pd
 import pytest
-from mlflow.tracking import MlflowClient
+from mlflow.tracking import MlflowClient  # type: ignore[import-not-found]
 
 import pycarot.anomaly
 import pycarot.datasets
@@ -90,4 +90,5 @@ def test_anomaly(data):
 
 
 if __name__ == "__main__":
-    test_anomaly()
+    test_data = pycarot.datasets.get_data("anomaly")
+    test_anomaly(test_data)
